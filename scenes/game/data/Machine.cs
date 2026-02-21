@@ -9,7 +9,7 @@ public abstract class Machine
     public string Name { get; }
     public string Id { get; }
     
-    public File ProcessFile { get; }
+    public File ProcessFile { get; protected set; }
     
     protected readonly Dictionary<string, Machine> _outputs = new();
     protected Belt _belt;
