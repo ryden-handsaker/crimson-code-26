@@ -1,38 +1,72 @@
 [gd_scene format=3 uid="uid://bjn8clfqdjrcv"]
 
-[ext_resource type="Script" uid="uid://dbp7nbcusfewf" path="res://scenes/game/blocks/FilterBlock.cs" id="1_b6y5y"]
+[ext_resource type="Script" uid="uid://druhyljlb4exw" path="res://scenes/game/blocks/FilterMachine.cs" id="1_lseaw"]
 [ext_resource type="Texture2D" uid="uid://nmdesl6dxyqg" path="res://icon.svg" id="2_lseaw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lseaw"]
-size = Vector2(128, 128)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lseaw"]
 
-[node name="FilterBlock" type="Area2D" unique_id=1816785580]
-script = ExtResource("1_b6y5y")
-
-[node name="Name" type="Label" parent="." unique_id=1501898910]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Filter"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="FilterMachine" type="GraphNode" unique_id=1806822129]
+offset_right = 209.0
+offset_bottom = 231.0
+theme_override_constants/separation = 10
+theme_override_styles/titlebar = SubResource("StyleBoxEmpty_lseaw")
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = false
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("1_lseaw")
 
 [node name="Icon" type="Sprite2D" parent="." unique_id=1569050399]
+visible = false
 texture = ExtResource("2_lseaw")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=539075760]
-shape = SubResource("RectangleShape2D_lseaw")
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=307180380]
+layout_mode = 2
 
-[connection signal="input_event" from="." to="." method="OnInputEvent"]
-[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
-[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]
+[node name="Input" type="Label" parent="HBoxContainer" unique_id=1651583155]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input"
+
+[node name="Output" type="Label" parent="HBoxContainer" unique_id=714886268]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Output"
+horizontal_alignment = 2
+
+[node name="MenuButton" type="OptionButton" parent="." unique_id=2134580215]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = ".png"
+popup/item_0/id = 0
+popup/item_1/text = ".txt"
+popup/item_1/id = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1141178963]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_lseaw")
+stretch_mode = 3
