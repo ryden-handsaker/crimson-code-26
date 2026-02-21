@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://73mslj0b401x"]
+
+[ext_resource type="Script" uid="uid://7xsmvie2u41y" path="res://scenes/game/Game.cs" id="1_sul5r"]
+[ext_resource type="PackedScene" uid="uid://bjn8clfqdjrcv" path="res://scenes/game/blocks/filter_block.tscn" id="2_7h61r"]
+
+[node name="Game" type="Node2D" unique_id=2138649429]
+script = ExtResource("1_sul5r")
+
+[node name="FactoryArea" type="Node2D" parent="." unique_id=778325457]
+
+[node name="FilterBlock" parent="FactoryArea" unique_id=1711370646 instance=ExtResource("2_7h61r")]
+position = Vector2(276, 286)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=524215105]
+
+[node name="Panel" type="Panel" parent="UI" unique_id=310593600]
+anchors_preset = -1
+anchor_left = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Panel" unique_id=1893373214]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel/ScrollContainer" unique_id=1906428521]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SuperButton" type="Button" parent="UI/Panel/ScrollContainer/VBoxContainer" unique_id=1826209108]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Super button"
+
+[node name="SuperButton2" type="Button" parent="UI/Panel/ScrollContainer/VBoxContainer" unique_id=110626831]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Super button"
+
+[node name="SuperButton3" type="Button" parent="UI/Panel/ScrollContainer/VBoxContainer" unique_id=351590421]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Super button"
+
+[node name="SuperButton4" type="Button" parent="UI/Panel/ScrollContainer/VBoxContainer" unique_id=1731979012]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Super button"

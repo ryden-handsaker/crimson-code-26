@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="Crimson Code 26"
+run/main_scene="uid://73mslj0b401x"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [dotnet]
 
