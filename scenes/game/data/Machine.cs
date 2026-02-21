@@ -9,15 +9,17 @@ public abstract class Machine
     public string Name { get; }
     public string Id { get; }
     
-    private readonly Dictionary<string, Machine> _outputs = new();
-    private Belt _belt;
+    public File ProcessFile { get; }
     
-    public abstract void Run();
+    protected readonly Dictionary<string, Machine> _outputs = new();
+    protected Belt _belt;
+    
+    public abstract void Process(File file);
         // await input belt
         // Do processing
         // await Outputs.get("Success").receive(file);
 
-    public bool AddConnection(string name, Belt belt) =>  belt == null ? throw new ArgumentNullException(nameof(belt)) : _outputs.TryAdd(name, belt);
+    public bool AddConnection(string name, Machine machine) =>  machine == null ? throw new ArgumentNullException(nameof(machine)) : _outputs.TryAdd(name, machine);
 
-    public abstract void Receive(File file);
+    public bool Enqueue(File file) => _belt.Enqueue(file);
 }
