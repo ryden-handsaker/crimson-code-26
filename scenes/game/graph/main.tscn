@@ -29,7 +29,6 @@ _machineScene = ExtResource("2_eofdk")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-scroll_offset = Vector2(-70, 0)
 grid_pattern = 1
 panning_scheme = 1
 minimap_enabled = false
@@ -87,4 +86,5 @@ layout_mode = 2
 text = "Simulate"
 
 [connection signal="connection_request" from="GraphEdit" to="." method="OnConnectionRequest"]
+[connection signal="disconnection_request" from="GraphEdit" to="." method="OnDisconnectionRequest"]
 [connection signal="button_down" from="Button" to="." method="OnButtonButtonDown"]
