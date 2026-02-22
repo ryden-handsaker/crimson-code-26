@@ -107,8 +107,7 @@ public partial class Main : Control
 		visualizer.JsonMap = json;
 
 		GetTree().Root.AddChild(visualizer);
-		GetTree().CurrentScene.QueueFree();
-		GetTree().CurrentScene = visualizer;
+		visualizer.Position = Vector2.Zero;
 	}
 
 	private void OnSaveButtonPressed()
