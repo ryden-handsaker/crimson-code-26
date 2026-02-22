@@ -8,8 +8,8 @@ public class File
 {
     public string Path { get; }
 
-    public string Name { get; }
-    public string Extension { get; }
+    public string Name { get; set; }
+    public string Extension { get; set; }
     public DateTime DateModified { get; }
     public DateTime DateCreated { get; }
 
