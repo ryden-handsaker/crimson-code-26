@@ -16,6 +16,8 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
     private void SetExtensions(IEnumerable<string> extensions)
     {
         _extensions = extensions?.ToList() ?? [];
+        //foreach (var extension in _extensions)
+        //    Godot.GD.Print($"{extension}");
     }
     
     public override void Process(File file)
@@ -24,20 +26,20 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
             throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
-        Godot.GD.Print($"Filter: {file.Extension} = {Extensions[0]}?"); // it's not even getting this far in example 2 rn
         
-        Push(Extensions.Any(extension => file.Extension.Equals(extension)) ? Outputs["Pass"] : Outputs["Fail"]);
+        Push(Extensions.Any(extension => file.Extension.Equals(extension)) ? Outputs["Match"] : Outputs["Fail"]);
     }
 
     public ExtensionFilter(Guid guid)
     {
-        this.Initialize(guid);
+        Initialize(guid);
     }
 
     public static ExtensionFilter CreateFromJSON(Guid guid, JsonObject json)
     {
         var machine = new ExtensionFilter(guid);
-
+        // json.TryGetPropertyValue("extensions", out var myNode);
+        // Godot.GD.Print($"Node: {myNode}");
         if (json.TryGetPropertyValue("extensions", out var extensionNode) && extensionNode is JsonArray extensions)
             machine.SetExtensions(
                 extensions

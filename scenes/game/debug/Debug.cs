@@ -36,10 +36,10 @@ public partial class Debug : Node2D
 		string json2 = """
 					{
 					  "1d000e90-3b4c-44ae-81ce-d418c70fa9b1": {
-						"data": { "Filetype": [".txt"] },
+						"data": { "extensions": [".txt"] },
 						"outputs": {
-						  "Fail" : "00000000-0000-0000-0000-000000000000",
-						  "Match": "e703e9a0-6c4f-45bd-ba93-ed73018e23e5"
+						  "Match" : "e703e9a0-6c4f-45bd-ba93-ed73018e23e5",
+						  "Fail": "00000000-0000-0000-0000-000000000000"
 						},
 						"type": "ExtensionFilter"
 					  },
@@ -70,10 +70,10 @@ public partial class Debug : Node2D
 		if (_timeSinceLastTick > 0.2)
 		{
 			_timeSinceLastTick = 0.0;
-			GD.Print("\n");
+			// GD.Print("\n");
 			foreach (var (guid, machine) in _parsedMachines)
 			{
-				GD.Print($"{machine.GetType()}: {guid}");
+				// GD.Print($"{machine.GetType()}: {guid}");
 				machine.Tick();
 			}
 		}

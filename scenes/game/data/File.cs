@@ -22,7 +22,7 @@ public class File
                 path.Remove(0, 2) // cut off ~
             ]);
         }
-        return System.IO.Path.GetFullPath(path);
+        return path;
     }
 
     public File(string path)

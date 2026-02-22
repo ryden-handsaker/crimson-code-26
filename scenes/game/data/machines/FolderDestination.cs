@@ -11,14 +11,24 @@ public class FolderDestination : Machine, ISerializable<FolderDestination>
 	public override void Process(File file)
 	{
 		if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
-		
-		System.IO.File.Move(
-			file.Path,
-			System.IO.Path.Combine([
-				Path,
-				string.Concat([file.Name, file.Extension])
-			])
-		);
+
+		string newPath = System.IO.Path.Combine([
+			Path,
+			string.Concat([file.Name, file.Extension])
+		]);
+
+		try
+		{
+			System.IO.File.Move(
+				file.Path,
+				newPath
+			);
+		}
+		catch (System.IO.IOException e)
+		{
+			Godot.GD.Print($"Move from {file.Path} to {newPath} failed");
+			Godot.GD.Print($"It's likely that {file.Name}{file.Extension} already exists at {Path}");
+		}
 	}
 
 	public FolderDestination(Guid guid)
