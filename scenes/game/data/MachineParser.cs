@@ -14,10 +14,10 @@ public class MachineParser
 
     public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
     {
-        { Type.FileSource, (guid, data) => new FileSource(guid) },
-        { Type.FileDestination, (guid, data) => new FileSource(guid) },
-        { Type.TrashDestination, (guid, data) => new FileSource(guid) },
-        { Type.ExtensionFilter, (guid, data) => ExtensionFilter.CreateFromJSON(guid) }
+        { Type.FileSource, FolderSource.CreateFromJSON },
+        //{ Type.FileDestination, (guid, data) => new FolderDestination(guid) },
+        //{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
+        { Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
     };
 
     public static readonly Dictionary<Guid, Machine> ParsedMachines = new();
@@ -66,9 +66,20 @@ public class MachineParser
             if (!Factories.TryGetValue(machine.Type, out var factory))
                 throw new ArgumentException("unknown machine type");
 
-            ParsedMachines[guid] = factory();
+            ParsedMachines[guid] = factory(guid, machine.Data);
         }
 
+        foreach (var (guid, machine) in machines)
+        {
+            var parsed = ParsedMachines[guid];
+            
+            foreach (var (name, targetGuid) in machine.Outputs)
+            {
+                if (!ParsedMachines.TryGetValue(targetGuid, out var target))
+                    throw new ArgumentException("invalid reference as output");
 
+                parsed.AddConnection(name, target);
+            }
+        }
     }
 }
