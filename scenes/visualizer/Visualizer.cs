@@ -122,6 +122,13 @@ public partial class Visualizer : Node2D
 
 				var atlasCoords = new Vector2I(x, y + 2);
 
+				if ((x, y) == (0, 1) && machine is not FolderSource)
+					atlasCoords.Y += 2;
+				if ((x, y) ==  (1, 2) && machine.Outputs.Count > 1)
+					atlasCoords.Y += 1;
+				else if ((x, y) ==  (2, 1) && machine.Outputs.Count > 0)
+					atlasCoords.Y += 2;
+
 				_machines.SetCell(pos + worldOffset, 0, atlasCoords);
 			}
 		}
