@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c66a1oomtayeu" path="res://scenes/game/machine_template.tscn" id="2_l4pes"]
 [ext_resource type="Resource" uid="uid://c6u3wo50mr5dm" path="res://resources/filter_extension.tres" id="3_5ia48"]
 [ext_resource type="Script" uid="uid://bc81oymbcpcj" path="res://scenes/game/graph/GraphEdit.cs" id="4_66dbo"]
-[ext_resource type="PackedScene" uid="uid://ceebwxa13t0cf" path="res://scenes/game/graph/machine_button.tscn" id="4_eofdk"]
+[ext_resource type="PackedScene" uid="uid://d0wxej52ao5gl" path="res://scenes/game/machine_button.tscn" id="5_66dbo"]
 [ext_resource type="Resource" uid="uid://cj8sovnrqnsbq" path="res://resources/file_source.tres" id="5_hvrwv"]
 [ext_resource type="Resource" uid="uid://ra6fcrry7ilc" path="res://resources/file_destination.tres" id="6_ynsps"]
 
@@ -47,24 +47,21 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FilterExtension" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("4_eofdk")]
-layout_mode = 2
-machineResource = ExtResource("3_5ia48")
-
-[node name="FileSource" parent="Panel/ScrollContainer/Buttons" unique_id=535732831 instance=ExtResource("4_eofdk")]
+[node name="FileSource" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 machineResource = ExtResource("5_hvrwv")
 
-[node name="FileDestination" parent="Panel/ScrollContainer/Buttons" unique_id=1169855345 instance=ExtResource("4_eofdk")]
+[node name="FileDestination" parent="Panel/ScrollContainer/Buttons" unique_id=1759098864 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 machineResource = ExtResource("6_ynsps")
+
+[node name="FilterExtension" parent="Panel/ScrollContainer/Buttons" unique_id=1324061357 instance=ExtResource("5_66dbo")]
+layout_mode = 2
+machineResource = ExtResource("3_5ia48")
 
 [node name="Button" type="Button" parent="." unique_id=1905827587]
 layout_mode = 2
 text = "HI"
 
 [connection signal="connection_request" from="GraphEdit" to="." method="OnConnectionRequest"]
-[connection signal="pressed" from="Panel/ScrollContainer/Buttons/FilterExtension" to="Panel/ScrollContainer/Buttons/FilterExtension" method="OnPressed"]
-[connection signal="pressed" from="Panel/ScrollContainer/Buttons/FileSource" to="Panel/ScrollContainer/Buttons/FileSource" method="OnPressed"]
-[connection signal="pressed" from="Panel/ScrollContainer/Buttons/FileDestination" to="Panel/ScrollContainer/Buttons/FileDestination" method="OnPressed"]
 [connection signal="button_down" from="Button" to="." method="OnButtonButtonDown"]

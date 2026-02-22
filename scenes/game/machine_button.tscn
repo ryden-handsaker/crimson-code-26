@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d0wxej52ao5gl"]
+
+[ext_resource type="Script" path="res://scenes/game/MachineButton.cs" id="1_4hxf5"]
+
+[node name="MachineButton" type="Button" unique_id=816893365]
+custom_minimum_size = Vector2(0, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4hxf5")
+
+[connection signal="pressed" from="." to="." method="OnPressed"]
