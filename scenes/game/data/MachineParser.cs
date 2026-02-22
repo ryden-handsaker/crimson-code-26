@@ -16,15 +16,13 @@ public class MachineParser
 	{
 		{ Type.FolderSource, FolderSource.CreateFromJSON },
 		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
-		//{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
+		{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
 		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
 	};
 
-	public static readonly Dictionary<Guid, Machine> ParsedMachines = new();
-
-	public static void ParseJSON(string input)
-	{
-		ParsedMachines.Clear();
+    public static Dictionary<Guid, Machine> ParseJSON(string input)
+    {
+        var parsedMachines = new Dictionary<Guid, Machine>();
 
 		var root = JsonNode.Parse(input) as JsonObject
 			?? throw new ArgumentException("bad json");
@@ -39,8 +37,8 @@ public class MachineParser
 			var node = entry.Value as JsonObject
 					   ?? throw new ArgumentException("node is not a json object");
 
-			if (!Enum.TryParse(node["type"]?.GetValue<string>(), out MachineParser.Type type))
-				throw new ArgumentException("node has invalid type");
+            if (!Enum.TryParse(node["type"]?.GetValue<string>(), out MachineParser.Type type))
+                throw new ArgumentException("node has invalid type: " + node["type"].GetValue<string>());
 
 			var outputs = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
 			if (node.TryGetPropertyValue("outputs", out var outputNode) && outputNode is JsonObject outputObject)
@@ -64,22 +62,24 @@ public class MachineParser
 		foreach (var (guid, machine) in machines) 
 		{
 			if (!Factories.TryGetValue(machine.Type, out var factory))
-				throw new ArgumentException("unknown machine type");
+				throw new ArgumentException("unknown machine type: " + machine.Type);
 
-			ParsedMachines[guid] = factory(guid, machine.Data);
-		}
+            parsedMachines[guid] = factory(guid, machine.Data);
+        }
 
-		foreach (var (guid, machine) in machines)
-		{
-			var parsed = ParsedMachines[guid];
-			
-			foreach (var (name, targetGuid) in machine.Outputs)
-			{
-				if (!ParsedMachines.TryGetValue(targetGuid, out var target))
-					throw new ArgumentException("invalid reference as output");
+        foreach (var (guid, machine) in machines)
+        {
+            var parsed = parsedMachines[guid];
+            
+            foreach (var (name, targetGuid) in machine.Outputs)
+            {
+                if (!parsedMachines.TryGetValue(targetGuid, out var target))
+                    throw new ArgumentException("invalid reference as output");
 
-				parsed.AddConnection(name, target);
-			}
-		}
-	}
+                parsed.AddConnection(name, target);
+            }
+        }
+
+        return parsedMachines;
+    }
 }

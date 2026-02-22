@@ -47,6 +47,8 @@ public partial class GraphEdit : Godot.GraphEdit
 					}
 					machineData.Add("data", optionDict);
 				}
+
+				machineData.Add("position", machine.Position);
 			
 				dict.Add(machine.Guid.ToString(), machineData);	
 			}

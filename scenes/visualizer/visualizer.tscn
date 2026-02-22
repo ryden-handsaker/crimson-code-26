@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://sydgop38y2sb"]
+
+[ext_resource type="Script" uid="uid://cawsxk1pg8l88" path="res://scenes/visualizer/Visualizer.cs" id="1_n004b"]
+[ext_resource type="Texture2D" uid="uid://d184qevestsr8" path="res://assets/dev_texture.png" id="2_nnkq8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hf8o8"]
+texture = ExtResource("2_nnkq8")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_nnkq8"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_hf8o8")
+
+[node name="Visualizer" type="Node2D" unique_id=511065362]
+script = ExtResource("1_n004b")
+JsonMap = "{
+  \"1b03b706-4667-47ad-8970-8449b66a8fdf\" : {
+    \"type\" : \"FolderSource\",
+    \"outputs\" : {
+      \"stream\" : \"639fe468-6dfc-401e-936f-27d26d4317dd\"
+    },
+    \"data\" : {
+      \"path\" : \"C:/Users/shithead/Downloads/\"
+    }
+  },
+  \"639fe468-6dfc-401e-936f-27d26d4317dd\" : {
+    \"type\" : \"ExtensionFilter\",
+    \"outputs\" : {
+      \"pass\" : \"e07fef47-851b-426c-861a-edf134782631\",
+      \"fail\" : \"e202be1f-bfb8-466d-b9b4-60cc9f8a1f28\"
+    },
+    \"data\" : {
+      \"extentions\" : [ \"png\" ]
+    }
+  },
+  \"e07fef47-851b-426c-861a-edf134782631\" : {
+    \"type\" : \"FolderDestination\",
+    \"data\" : {
+      \"path\" : \"C:/Users/shithead/Downloads/sorted/\"
+    }
+  },
+  \"e202be1f-bfb8-466d-b9b4-60cc9f8a1f28\" : {
+    \"type\" : \"TrashDestination\"
+  }
+}"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1016484079]
+unique_name_in_owner = true
+tile_set = SubResource("TileSet_nnkq8")
