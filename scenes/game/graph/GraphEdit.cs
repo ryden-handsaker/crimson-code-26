@@ -1,6 +1,8 @@
+using System;
 using Godot;
 using Godot.Collections;
 using CrimsonCode26.scripts;
+using Array = Godot.Collections.Array;
 
 namespace CrimsonCode26.scenes.game.graph;
 
@@ -59,6 +61,10 @@ public partial class GraphEdit : Godot.GraphEdit
 			
 			dict.Add(machine.Guid.ToString(), machineData);
 		}
+
+		Dictionary<string, Variant> hardcodedDoNothing = new() { {"type", "DoNothingDestination" } };
+		
+		dict.Add("00000000-0000-0000-0000-000000000000", hardcodedDoNothing);
 
 		return Json.Stringify(dict);
 	}
