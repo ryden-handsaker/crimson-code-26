@@ -8,6 +8,7 @@ public class TrashDestination : Machine, ISerializable<TrashDestination>
     public override void Process(File file)
     {
         // TODO: delete file
+        throw new NotImplementedException();
     }
 
     public TrashDestination(Guid guid)
