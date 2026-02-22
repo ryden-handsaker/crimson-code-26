@@ -17,7 +17,7 @@ public abstract class Machine
     public bool BadState { get; protected set; }
     
     /// Map of machines to push to
-    public readonly System.Collections.Generic.Dictionary<string, Machine> Outputs = new();
+    public readonly Dictionary<string, Machine> Outputs = new();
     /// Input belt
     protected Belt Belt;
 
