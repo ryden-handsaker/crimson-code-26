@@ -106,10 +106,15 @@ public partial class Main : Control
 		var visualizer = packedScene.Instantiate<Visualizer>();
 		visualizer.JsonMap = json;
 
-		GD.Print(json);
-
 		GetTree().Root.AddChild(visualizer);
 		GetTree().CurrentScene.QueueFree();
 		GetTree().CurrentScene = visualizer;
+	}
+
+	private void OnSaveButtonPressed()
+	{
+		var json = _graphEdit.ToJSON();
+
+		GD.Print(json);
 	}
 }

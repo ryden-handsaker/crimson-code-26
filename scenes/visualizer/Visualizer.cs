@@ -40,7 +40,8 @@ public partial class Visualizer : Node2D
 		foreach (Machine machine in ParsedMachines.Values)
 		{
 			machine.Tick();
-			GD.Print(machine.GetBeltState().Peek().Name);
+			if (machine.GetBeltState().Count > 0)
+				GD.Print(machine.GetBeltState().Peek().Name);
 		}
 	}
 
