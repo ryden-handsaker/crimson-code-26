@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 public partial class MachineTemplate : GraphNode
@@ -11,16 +13,19 @@ public partial class MachineTemplate : GraphNode
 
 	public MachineResource Resource { get; protected set; } // used in the JSON stringifier so it knows what the machine be
 
-	public String[] OutputConnections { get; protected set; }
+	public List<Guid> OutputConnections { get; protected set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Guid = Guid.NewGuid();
+		
 	}
 
 	public void Initialize(MachineResource machine)
 	{
+		Guid = Guid.NewGuid();
+
+		OutputConnections = [];
 		Resource = machine;
 
 		if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max, so we just do that lowk
@@ -32,6 +37,7 @@ public partial class MachineTemplate : GraphNode
 		for (int i = 0; i < machine.Outputs.Length; i++)
 		{
 			AddOutput(machine.Outputs[i], i + machine.Inputs.Length + machine.Options.Length);
+			OutputConnections.Add(Guid.Empty);
 		}
 
 		Title = machine.Type;
@@ -84,5 +90,18 @@ public partial class MachineTemplate : GraphNode
 		hbox.AddChild(text);
 		hbox.AddChild(textEdit);
 		AddChild(hbox);
+	}
+
+	// converts from the port godot gives to the actual port  EX: (0, 1, 2)
+	public int ToActualPort(int id)
+	{
+		return id - Resource.Options.Length - Resource.Inputs.Length;
+	}
+
+	public void SetOutputConnection(Guid output, int slotId)
+	{
+		var id = slotId; // output slots are below inputs and options so we gotta remove from that
+		GD.Print(id);
+		OutputConnections[id] = output;
 	}
 }

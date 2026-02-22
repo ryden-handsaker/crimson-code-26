@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Linq;
 
 public partial class Main : HBoxContainer
 {
@@ -29,6 +30,9 @@ public partial class Main : HBoxContainer
 	private void OnConnectionRequest(StringName fromNode, int fromPort, StringName toNode, int toPort)
 	{
 		graphEdit.ConnectNode(fromNode, fromPort, toNode, toPort);
+		var outputNode = graphEdit.GetNode<MachineTemplate>(new NodePath(toNode));
+		var inputNode = graphEdit.GetNode<MachineTemplate>(new NodePath(fromNode));
+		inputNode.SetOutputConnection(outputNode.Guid, fromPort);
 	}
 
 	private void AddMachine(MachineResource resource)
@@ -36,5 +40,10 @@ public partial class Main : HBoxContainer
 		var machineNode = machineScene.Instantiate<MachineTemplate>();
 		machineNode.Initialize(resource);
 		graphEdit.AddChild(machineNode);
+	}
+
+	private void OnButtonButtonDown()
+	{
+		GD.Print(graphEdit.toJSON());
 	}
 }

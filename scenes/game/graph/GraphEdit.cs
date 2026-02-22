@@ -14,27 +14,45 @@ public partial class GraphEdit : Godot.GraphEdit
 	{
 	}
 
-	public void toJSON()
+	public string toJSON()
 	{
 		var dict = new Dictionary<string, Variant>();
-		foreach (MachineTemplate machine in GetChildren())
+		foreach (Node child in GetChildren())
 		{
-			var machineData = new Dictionary<string, Variant>();
-			machineData.Add("type", machine.Type);
-
-			if (machine.Resource.Outputs.Length > 0)
+			if (child is MachineTemplate machine)
 			{
-				var outputs = machine.Resource.Outputs;
-				var outputDict = new Dictionary<string, string>();
-				
-				for (int i = 0; i < outputs.Length; i++)
+				var machineData = new Dictionary<string, Variant>();
+				machineData.Add("type", machine.Type);
+
+				if (machine.Resource.Outputs.Length > 0)
 				{
-					outputDict.Add(outputs[i], machine.OutputConnections[i]);
+					var outputs = machine.Resource.Outputs;
+					var outputDict = new Dictionary<string, string>();
+					
+					for (int i = 0; i < outputs.Length; i++)
+					{
+						outputDict.Add(outputs[i], machine.OutputConnections[i].ToString());
+					}
+					machineData.Add("outputs", outputDict);
 				}
-				machineData.Add("outputs", outputs);
+
+				if (machine.Resource.Options.Length > 0)
+				{
+					var options = machine.Resource.Options;
+					var optionDict = new Dictionary<string, string[]>();
+
+					for (int i = 0; i < options.Length; i++)
+					{
+						optionDict.Add(options[i], [".txt"]); // TODO: implement this lil bro
+					}
+					machineData.Add("data", optionDict);
+				}
+			
+				dict.Add(machine.Guid.ToString(), machineData);	
 			}
-		
-			dict.Add()
+			
 		}
+
+		return Json.Stringify(dict);
 	}
 }
