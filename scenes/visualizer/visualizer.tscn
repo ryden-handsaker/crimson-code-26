@@ -57,5 +57,14 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 one_shot = true
 
+[node name="BackButton" type="Button" parent="." unique_id=1129031119]
+unique_name_in_owner = true
+offset_left = 81.0
+offset_top = 601.0
+offset_right = 127.0
+offset_bottom = 632.0
+text = "Back"
+
 [connection signal="pressed" from="StartButton" to="." method="OnTickButtonPressed"]
 [connection signal="timeout" from="TickTimer" to="." method="OnTickTimerTimeout"]
+[connection signal="pressed" from="BackButton" to="." method="OnBackButtonPressed"]

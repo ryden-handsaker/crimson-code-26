@@ -210,4 +210,9 @@ public partial class Visualizer : Node2D
 		_tickTimer.Start(TickTime);
 		Tick();
 	}
+
+	private void OnBackButtonPressed()
+	{
+		QueueFree();
+	}
 }

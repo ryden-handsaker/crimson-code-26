@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dch12e7drk208" path="res://scenes/visualizer/FileItem.cs" id="1_nvwfa"]
 
 [node name="FileItem" type="PathFollow2D" unique_id=444434317]
+rotates = false
 script = ExtResource("1_nvwfa")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=483689536]
