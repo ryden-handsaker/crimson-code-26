@@ -24,7 +24,7 @@ public class FolderSource : Machine, ISerializable<FolderSource>
 
     public FolderSource(Guid guid)
     {
-        Initialize("File Source", guid);
+        Initialize("Folder Source", guid);
         Belt = new Belt(this, 100);
     }
     
