@@ -82,8 +82,10 @@ public partial class Visualizer : Node2D
 		{
 			if (machine.GetBeltState().Count > 0)
 			{
-
-				//_paths[machine.Id].AddChild
+				var item = ItemScene.Instantiate<FileItem>();
+				var file = machine.GetBeltState().Peek();
+				item.fileName = file.Name + file.Extension;
+				_paths[machine.Id].AddChild(item);
 			}
 		}
 	}
@@ -164,7 +166,7 @@ public partial class Visualizer : Node2D
 
 		curve.AddPoint(startPos * 32);
 		curve.AddPoint(startPos with { Y = endPos.Y } * 32);
-		curve.AddPoint(endPos * 32);
+		curve.AddPoint(endPos * 32 + new Vector2I(32, 0));
 		path.Curve = curve;
 
 		_pathContainer.AddChild(path);
@@ -189,54 +191,5 @@ public partial class Visualizer : Node2D
 	private void OnTickButtonPressed()
 	{
 		Tick();
-	}
-
-	private Stack<Machine> BackPropagate(Machine endMachine)
-	{
-		// Build reverse lookup: machineId, machines that output to it
-		var reverseMap = new Dictionary<Guid, List<Machine>>();
-
-		foreach (var machine in ParsedMachines.Values)
-		{
-			foreach (var target in machine.Outputs.Values)
-			{
-				if (!reverseMap.ContainsKey(target.Id))
-					reverseMap[target.Id] = new List<Machine>();
-				reverseMap[target.Id].Add(machine);
-			}
-		}
-
-		// BFS backwards from end machine
-		var visited = new HashSet<Guid>();
-		var queue   = new Queue<Machine>();
-		var ordered = new List<Machine>();
-
-		queue.Enqueue(endMachine);
-		visited.Add(endMachine.Id);
-
-		while (queue.Count > 0)
-		{
-			var current = queue.Dequeue();
-			ordered.Add(current);
-
-			if (!reverseMap.TryGetValue(current.Id, out var parents))
-				continue;
-
-			foreach (var parent in parents)
-			{
-				if (visited.Contains(parent.Id)) continue;
-				visited.Add(parent.Id);
-				queue.Enqueue(parent);
-			}
-		}
-
-		ordered.Reverse();
-
-		// Reverse so stack pops source-first, end machine last
-		var result = new Stack<Machine>();
-		foreach (var machine in ordered)
-			result.Push(machine);
-
-		return result;
 	}
 }
