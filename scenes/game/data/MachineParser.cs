@@ -16,7 +16,7 @@ public class MachineParser
 	{
 		{ Type.FolderSource, FolderSource.CreateFromJSON },
 		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
-		//{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
+		{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
 		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
 	};
 
@@ -62,7 +62,7 @@ public class MachineParser
 		foreach (var (guid, machine) in machines) 
 		{
 			if (!Factories.TryGetValue(machine.Type, out var factory))
-				throw new ArgumentException("unknown machine type");
+				throw new ArgumentException("unknown machine type: " + machine.Type);
 
             parsedMachines[guid] = factory(guid, machine.Data);
         }

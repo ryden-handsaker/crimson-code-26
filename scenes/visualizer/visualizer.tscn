@@ -42,7 +42,7 @@ JsonMap = "{
     }
   },
   \"e07fef47-851b-426c-861a-edf134782631\" : {
-    \"type\" : \"FileDestination\",
+    \"type\" : \"FolderDestination\",
     \"data\" : {
       \"path\" : \"C:/Users/shithead/Downloads/sorted/\"
     }

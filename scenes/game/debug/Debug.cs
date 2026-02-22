@@ -1,9 +1,12 @@
 using Godot;
 using System;
 using CrimsonCode26.scenes.game.data;
+using System.Collections.Generic;
 
 public partial class Debug : Node2D
 {
+	private Dictionary<Guid, Machine> parsedMachines;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -50,14 +53,14 @@ public partial class Debug : Node2D
 					}
 """;
 		GD.Print($"Start of Debug.cs _Ready");
-		MachineParser.ParseJSON(json);
+		parsedMachines = MachineParser.ParseJSON(json);
 		GD.Print($"End of Debug.cs _Ready");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		foreach (var (guid, machine) in MachineParser.ParsedMachines)
+		foreach (var (guid, machine) in parsedMachines)
 		{
 			GD.Print($"Hey it's machine {machine.Name}");
 			machine.Tick();
