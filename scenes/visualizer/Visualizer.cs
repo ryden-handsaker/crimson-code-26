@@ -10,7 +10,11 @@ public partial class Visualizer : Node2D
     [Export(PropertyHint.MultilineText)] public string JsonMap;
 	[Export] public PackedScene ItemScene;
 	private Dictionary<Guid, Machine> ParsedMachines;
-	private TileMapLayer _tileMap;
+	
+	private TileMapLayer _belts;
+	private TileMapLayer _machines;
+	
+	
 	private Control _nameContainer;
 	private Node2D _pathContainer;
 
@@ -20,10 +24,12 @@ public partial class Visualizer : Node2D
 
     public override void _Ready()
 	{
-		_tileMap = GetNode<TileMapLayer>("%TileMapLayer");
+		_belts = GetNode<TileMapLayer>("%Belts");
+		_machines = GetNode<TileMapLayer>("%Machines");
+		
 		_nameContainer = GetNode<Control>("%MachineNames");
 		_pathContainer = GetNode<Node2D>("%Paths");
-		//_tileMap.GetCellAlternativeTile()
+		
 		Visualize();
 	}
 
@@ -103,10 +109,16 @@ public partial class Visualizer : Node2D
 		var rightMachineOffset = new Vector2I(4, 0);
 		var bottomMachineOffset = new Vector2I(3, 4);
 
-		for (int i = 0; i < 9; i++)
+		for (var y = 0; y < 3; y++)
 		{
-			var offset = new Vector2I(i % 3 - 1, i / 3 - 1);
-			_tileMap.SetCell(pos + offset, 1, new Vector2I(0, 0));
+			for (var x = 0; x < 3; x++)
+			{
+				var worldOffset = new Vector2I(x - 1, y - 1);
+
+				var atlasCoords = new Vector2I(x, y + 2);
+
+				_machines.SetCell(pos + worldOffset, 0, atlasCoords);
+			}
 		}
 
 		var label = new Label
@@ -162,15 +174,15 @@ public partial class Visualizer : Node2D
 		const int rotate180 = (int)TileSetAtlasSource.TransformTranspose;
 		for (int y = startPos.Y; y < endPos.Y; y++) // conveyor belts should only ever go from top left to bottom right
 		{
-			_tileMap.SetCell(startPos with { Y = y }, 0, new Vector2I(0, 0));
+			_belts.SetCell(startPos with { Y = y }, 0, new Vector2I(0, 0));
 		}
 		if (startPos.Y != endPos.Y) // this means there should be a conveyor turn
 		{
-			_tileMap.SetCell(startPos with { Y = endPos.Y }, 0, new Vector2I(0, 1), rotate180);
+			_belts.SetCell(startPos with { Y = endPos.Y }, 0, new Vector2I(0, 1), rotate180);
 		}
 		for (int x = startPos.X + 1; x < endPos.X; x++)
 		{
-			_tileMap.SetCell(endPos with { X = x }, 0, new Vector2I(0, 0), rotateRight);
+			_belts.SetCell(endPos with { X = x }, 0, new Vector2I(0, 0), rotateRight);
 		}
 	}
 
