@@ -5,8 +5,6 @@ using System;
 public partial class Main : HBoxContainer
 {
 
-	private Dictionary<String, Variant> machineDict = [];
-
 	[Export] PackedScene machineScene;
 	[Export] MachineResource testResource;
 	GraphEdit graphEdit;

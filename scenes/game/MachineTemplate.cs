@@ -1,28 +1,29 @@
-using System.Xml;
+using System;
 using Godot;
 
 public partial class MachineTemplate : GraphNode
 {
-	// [Export] MachineResource machine;
+	public Guid Guid { get; protected set; }
+	public string Type
+	{
+		get { return Title; }
+	}
+
+	public MachineResource Resource { get; protected set; } // used in the JSON stringifier so it knows what the machine be
+
+	public String[] OutputConnections { get; protected set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max
-
-		// for (int i = 0; i < machine.Options.Length; i++)
-		// {
-		// 	AddOption(machine.Options[i]);
-		// }
-		// for (int i = 0; i < machine.Outputs.Length; i++)
-		// {
-		// 	AddOutput(machine.Outputs[i], i + 1 + machine.Options.Length);
-		// }
+		Guid = Guid.NewGuid();
 	}
 
 	public void Initialize(MachineResource machine)
 	{
-		if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max
+		Resource = machine;
+
+		if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max, so we just do that lowk
 
 		for (int i = 0; i < machine.Options.Length; i++)
 		{

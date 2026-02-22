@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://buyr2ow0er1pk" path="res://scenes/game/MachineTemplate.cs" id="1_7fmpx"]
 
 [node name="MachineTemplate" type="GraphNode" unique_id=1033405312]
-offset_right = 253.0
-offset_bottom = 66.0
+offset_right = 301.0
+offset_bottom = 55.0
 theme_override_constants/separation = 10
 script = ExtResource("1_7fmpx")
