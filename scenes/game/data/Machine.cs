@@ -15,10 +15,10 @@ public abstract class Machine
     protected readonly System.Collections.Generic.Dictionary<string, Machine> Outputs = new();
     protected Belt Belt;
 
-    protected void Initialize(string name)
+    protected void Initialize(string name, Guid guid)
     {
         Name = name;
-        Id = Guid.NewGuid();
+        Id = guid;
         ProcessFile = null;
         Belt = new Belt(this);
     }

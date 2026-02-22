@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 using CrimsonCode26.scenes.game.data.machines;
-using Godot;
 
 namespace CrimsonCode26.scenes.game.data;
 
@@ -12,37 +12,63 @@ public class MachineParser
         FileSource, FileDestination, TrashDestination, ExtensionFilter
     }
 
-    public static readonly Dictionary<Type, Machine> MachineMap = new()
+    public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
     {
-        { Type.FileSource, typeof(FileSource) },
-        { Type.FileDestination, typeof(FileDestination) },
-        { Type.TrashDestination, typeof(TrashDestination) },
-        { Type.ExtensionFilter, typeof(ExtensionFilter) }
+        { Type.FileSource, (guid, data) => new FileSource(guid) },
+        { Type.FileDestination, (guid, data) => new FileSource(guid) },
+        { Type.TrashDestination, (guid, data) => new FileSource(guid) },
+        { Type.ExtensionFilter, (guid, data) => ExtensionFilter.CreateFromJSON(guid) }
     };
-    
-    
 
-    /*
+    public static readonly Dictionary<Guid, Machine> ParsedMachines = new();
+
+    public static void ParseJSON(string input)
+    {
+        ParsedMachines.Clear();
+
+        var root = JsonNode.Parse(input) as JsonObject
+            ?? throw new ArgumentException("bad json");
+
+        var machines = new Dictionary<Guid, (MachineParser.Type Type, Dictionary<string, Guid> Outputs, JsonObject Data)>();
+
+        foreach (var entry in root)
         {
-         "1b03b706-4667-47ad-8970-8449b66a8fdf" : {
-           "type" : "FileSource",
-           "outputs" : {
-             "stream" : "639fe468-6dfc-401e-936f-27d26d4317dd"
-           }
-         },
-         "639fe468-6dfc-401e-936f-27d26d4317dd" : {
-           "type" : "ExtensionFilter",
-           "outputs" : {
-             "pass" : "e07fef47-851b-426c-861a-edf134782631",
-             "fail" : "e202be1f-bfb8-466d-b9b4-60cc9f8a1f28"
-           }
-         },
-         "e07fef47-851b-426c-861a-edf134782631" : {
-           "type" : "FileDestination"
-         },
-         "e202be1f-bfb8-466d-b9b4-60cc9f8a1f28" : {
-           "type" : "TrashDestination"
-         }
-       }
-     */
+            if (!Guid.TryParse(entry.Key, out var guid))
+                throw new ArgumentException("key is not valid guid");
+
+            var node = entry.Value as JsonObject
+                       ?? throw new ArgumentException("node is not a json object");
+
+            if (!Enum.TryParse(node["type"]?.GetValue<string>(), out MachineParser.Type type))
+                throw new ArgumentException("node has invalid type");
+
+            var outputs = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
+            if (node.TryGetPropertyValue("outputs", out var outputNode) && outputNode is JsonObject outputObject)
+            {
+                foreach (var output in outputObject)
+                {
+                    var str = output.Value?.GetValue<string>();
+                    if (!Guid.TryParse(str, out var outputGuid))
+                        throw new ArgumentException("output has invalid guid");
+                    outputs[output.Key] = outputGuid;
+                }
+            }
+
+            if (node.TryGetPropertyValue("data", out var dataNode) && dataNode is JsonObject dataObject)
+            {
+                machines[guid] = (type, outputs, dataObject);
+            }
+            else machines[guid] = (type, outputs, null);
+        }
+
+        foreach (var (guid, machine) in machines) 
+        {
+            if (!Factories.TryGetValue(machine.Type, out var factory))
+                throw new ArgumentException("unknown machine type");
+
+            ParsedMachines[guid] = factory();
+        }
+
+
+    }
 }

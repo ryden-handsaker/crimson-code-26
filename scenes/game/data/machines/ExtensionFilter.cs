@@ -1,33 +1,50 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text.Json.Nodes;
 using CrimsonCode26.scenes.game.data;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
-public class ExtensionFilter : Machine
+public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
 {
-    public List<string> Extensions { get; private set; }
+    private List<string> _extensions = [];
+    
+    public IReadOnlyList<string> Extensions => _extensions;
+    
+    public void SetExtensions(IEnumerable<string> extensions)
+    {
+        _extensions = extensions?.ToList() ?? [];
+    }
     
     public override void Process(File file)
     {
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
-        foreach (string extension in Extensions)
+        if (Extensions.Any(extension => file.Extension.Equals(extension)))
         {
-            if (file.Extension.Equals(extension))
-            {
-                Outputs["Pass"].Enqueue(file);
-                ProcessFile = null;
-                return;
-            }
+            Outputs["Pass"].Enqueue(file);
+            ProcessFile = null;
         }
         Outputs["Fail"].Enqueue(file);
         ProcessFile = null;
     }
 
-    public ExtensionFilter()
+    public ExtensionFilter(Guid guid)
     {
-        this.Initialize("Extension Filter");
+        this.Initialize("Extension Filter", guid);
+    }
+
+    public static ExtensionFilter CreateFromJSON(Guid guid, JsonObject json)
+    {
+        var machine = new ExtensionFilter(guid);
+
+        if (json.TryGetPropertyValue("extensions", out var extensionNode) && extensionNode is JsonArray extensions)
+            machine.SetExtensions(extensions.Select(extenstion => extenstion?.GetValue<string>() ?? string.Empty)
+                .Where(str => !string.IsNullOrWhiteSpace(str)));
+        
+        return machine;
     }
 }
