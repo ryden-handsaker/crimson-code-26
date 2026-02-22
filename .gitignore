@@ -18,3 +18,7 @@ mono_crash.*.json
 
 # Jetbrains
 .idea/
+
+# Visual studio
+*.csproj
+*.sln
