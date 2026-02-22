@@ -12,7 +12,7 @@ public static class MachineParser
 		FolderSource,
 		FolderDestination, TrashDestination, DoNothingDestination, OpenDestination,
 		ExtensionFilter,
-		RenameModifier
+		RenameModifier,
 	}
 
 	public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
@@ -21,9 +21,9 @@ public static class MachineParser
 		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
 		{ Type.TrashDestination, TrashDestination.CreateFromJSON },
 		{ Type.DoNothingDestination, DoNothingDestination.CreateFromJSON },
-		{ Type.OpenDestination, DoNothingDestination.CreateFromJSON },
+		{ Type.OpenDestination, OpenDestination.CreateFromJSON },
 		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON },
-		{ Type.RenameModifier, ExtensionFilter.CreateFromJSON }
+		{ Type.RenameModifier, RenameModifier.CreateFromJSON }
 	};
 
 	public static Dictionary<Guid, Machine> ParseJSON(string input)
