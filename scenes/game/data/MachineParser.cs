@@ -20,8 +20,10 @@ public static class MachineParser
 		{ Type.FolderSource, FolderSource.CreateFromJSON },
 		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
 		{ Type.TrashDestination, TrashDestination.CreateFromJSON },
-		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON },
 		{ Type.DoNothingDestination, DoNothingDestination.CreateFromJSON },
+		{ Type.OpenDestination, DoNothingDestination.CreateFromJSON },
+		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON },
+		{ Type.RenameModifier, ExtensionFilter.CreateFromJSON }
 	};
 
 	public static Dictionary<Guid, Machine> ParseJSON(string input)
