@@ -82,10 +82,10 @@ public partial class MachineTemplate : GraphNode
 			HorizontalAlignment = HorizontalAlignment.Left,
 			Text = label + ":"
 		};
-		var textEdit = new TextEdit
+		var textEdit = new LineEdit
 		{
-			SizeFlagsHorizontal = SizeFlags.ExpandFill
-			
+			SizeFlagsHorizontal = SizeFlags.ExpandFill,
+			SizeFlagsVertical = SizeFlags.ExpandFill
 		};
 		hbox.AddChild(text);
 		hbox.AddChild(textEdit);

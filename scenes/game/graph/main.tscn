@@ -8,6 +8,8 @@
 [ext_resource type="Resource" uid="uid://cj8sovnrqnsbq" path="res://resources/file_source.tres" id="5_hvrwv"]
 [ext_resource type="Resource" uid="uid://ra6fcrry7ilc" path="res://resources/file_destination.tres" id="6_ynsps"]
 
+[sub_resource type="Theme" id="Theme_66dbo"]
+
 [node name="Main" type="HBoxContainer" unique_id=409967496]
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme = SubResource("Theme_66dbo")
 script = ExtResource("1_x30ci")
 machineScene = ExtResource("2_l4pes")
 testResource = ExtResource("3_5ia48")
