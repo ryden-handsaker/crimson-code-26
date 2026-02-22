@@ -7,7 +7,9 @@ using Godot;
 
 public partial class Visualizer : Node2D
 {
-    [Export(PropertyHint.MultilineText)] public string JsonMap;
+    [Export(PropertyHint.MultilineText)]
+    public string JsonMap;
+    
 	private Dictionary<Guid, Machine> ParsedMachines;
 	private TileMapLayer _tileMap;
 	private Control _nameContainer;
@@ -67,7 +69,10 @@ public partial class Visualizer : Node2D
 		for (int i = 0; i < 9; i++)
 		{
 			var offset = new Vector2I(i % 3 - 1, i / 3 - 1);
-			_tileMap.SetCell(pos + offset, 1, new Vector2I(0, 0));
+			
+			var atlasOffset = new Vector2I(0, 2);
+				
+			_tileMap.SetCell(pos + offset, 1, offset + atlasOffset);
 		}
 
 		var label = new Label
