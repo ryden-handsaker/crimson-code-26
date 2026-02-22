@@ -1,16 +1,11 @@
-[gd_scene format=3 uid="uid://c7hpowtnbimla"]
+[gd_scene format=3 uid="uid://gd4awmt4nxtu"]
 
 [ext_resource type="Script" uid="uid://dch12e7drk208" path="res://scenes/visualizer/FileItem.cs" id="1_nvwfa"]
+[ext_resource type="Texture2D" uid="uid://d02vds66gwn5m" path="res://assets/file.png" id="2_p0sys"]
 
 [node name="FileItem" type="PathFollow2D" unique_id=444434317]
 rotates = false
 script = ExtResource("1_nvwfa")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=483689536]
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 30.0
-offset_bottom = 30.0
 
 [node name="Label" type="Label" parent="." unique_id=1611672786]
 unique_name_in_owner = true
@@ -22,3 +17,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 10
 text = ".txt"
 horizontal_alignment = 1
+
+[node name="File" type="Sprite2D" parent="." unique_id=377700647]
+texture_filter = 3
+texture_repeat = 1
+position = Vector2(14.5, 17)
+scale = Vector2(0.90625, 1)
+texture = ExtResource("2_p0sys")
