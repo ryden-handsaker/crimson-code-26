@@ -43,7 +43,11 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
         var machine = new ExtensionFilter(guid);
 
         if (json.TryGetPropertyValue("extensions", out var extensionNode) && extensionNode is JsonArray extensions)
-            machine.SetExtensions(extensions.Select(extenstion => extenstion?.GetValue<string>() ?? string.Empty).Where(str => !string.IsNullOrWhiteSpace(str)));
+            machine.SetExtensions(
+                extensions
+                    .Select(extenstion => extenstion?.GetValue<string>() ?? string.Empty)
+                    .Where(str => !string.IsNullOrWhiteSpace(str))
+            );
         
         return machine;
     }
