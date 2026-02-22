@@ -9,12 +9,14 @@ public partial class Visualizer : Node2D
     [Export(PropertyHint.MultilineText)] public string JsonMap;
 	private Dictionary<Guid, Machine> ParsedMachines;
 	private TileMapLayer _tileMap;
+	private Control _nameContainer;
 
 	//private var conveyorStraightDirections;
 
     public override void _Ready()
 	{
 		_tileMap = GetNode<TileMapLayer>("%TileMapLayer");
+		_nameContainer = GetNode<Control>("%MachineNames");
 		//_tileMap.GetCellAlternativeTile()
 		Visualize();
 	}
@@ -56,6 +58,15 @@ public partial class Visualizer : Node2D
 			var offset = new Vector2I(i % 3 - 1, i / 3 - 1);
 			_tileMap.SetCell(pos + offset, 1, new Vector2I(0, 0));
 		}
+
+		var label = new Label
+		{
+			Text = Machine.GetName(machine.GetType()),
+			Position = new Vector2(pos.X * 32 - 28, pos.Y * 32 - 50),
+			HorizontalAlignment = HorizontalAlignment.Center,
+			Modulate = new Color(0, 0, 0, 1),
+		};
+		_nameContainer.AddChild(label);
 		
 		int failPathDistance = 0;
 		int passPathDistance = 0;

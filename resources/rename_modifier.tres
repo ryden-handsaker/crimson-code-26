@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MachineResource" format=3 uid="uid://cn5nt3j8muu37"]
 
-[ext_resource type="Script" uid="uid://xwh6e780fily" path="res://scripts/MachineOption.cs" id="1_3xlyk"]
+[ext_resource type="Script" uid="uid://cjxjlm5feoh2s" path="res://scripts/MachineOption.cs" id="1_3xlyk"]
 [ext_resource type="Script" uid="uid://dmdmt8sp7skwo" path="res://scripts/MachineResource.cs" id="2_dk2g0"]
 
 [sub_resource type="Resource" id="Resource_6gd0y"]
