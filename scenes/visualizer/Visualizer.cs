@@ -7,6 +7,7 @@ using Godot;
 
 public partial class Visualizer : Node2D
 {
+	[Export] public double TickTime;
     [Export(PropertyHint.MultilineText)] public string JsonMap;
 	[Export] public PackedScene ItemScene;
 	private Dictionary<Guid, Machine> ParsedMachines;
@@ -17,10 +18,10 @@ public partial class Visualizer : Node2D
 	
 	private Control _nameContainer;
 	private Node2D _pathContainer;
+	private Timer _tickTimer;
 
 	private Dictionary<Guid, Path2D> _paths = new();
 
-	//private var conveyorStraightDirections;
 
     public override void _Ready()
 	{
@@ -29,7 +30,8 @@ public partial class Visualizer : Node2D
 		
 		_nameContainer = GetNode<Control>("%MachineNames");
 		_pathContainer = GetNode<Node2D>("%Paths");
-		
+		_tickTimer = GetNode<Timer>("%TickTimer");
+		//_tileMap.GetCellAlternativeTile()
 		Visualize();
 	}
 
@@ -85,6 +87,7 @@ public partial class Visualizer : Node2D
 				var item = ItemScene.Instantiate<FileItem>();
 				var file = machine.GetBeltState().Peek();
 				item.fileName = file.Name + file.Extension;
+				item.lifespan = TickTime;
 				_paths[machine.Id].AddChild(item);
 			}
 		}
@@ -190,6 +193,13 @@ public partial class Visualizer : Node2D
 
 	private void OnTickButtonPressed()
 	{
+		GetNode<Button>("%StartButton").Visible = false;
+		_tickTimer.Start(TickTime);
+	}
+
+	private void OnTickTimerTimeout()
+	{
+		_tickTimer.Start(TickTime);
 		Tick();
 	}
 }
