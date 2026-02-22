@@ -1,10 +1,12 @@
+using System;
 using System.ComponentModel;
 using System.IO;
+using System.Text.Json.Nodes;
 using Godot;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
-public class FileSource : Machine
+public class FolderSource : Machine, ISerializable<FolderSource>
 {
     public override void Process(File file)
     {
@@ -20,17 +22,18 @@ public class FileSource : Machine
         Enqueue(new File(e.FullPath));
     }
 
-    public FileSource(string path)
+    public FolderSource(Guid guid)
     {
-        Initialize("File Source");
+        Initialize("File Source", guid);
         Belt = new Belt(this, 100);
-
-        foreach (string file in Directory.GetFiles(path))
+    }
+    
+    private void SetPath(string path) // allows you to change but is it necessary?
+    {
+        foreach (var file in Directory.GetFiles(path))
         {
             if (!Enqueue(new File(file)))
-            {
                 GD.PrintErr("Maximum file count exceeded"); // TODO: just a current limitation of the architecture
-            }
         }
 
         // https://learn.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher?view=net-10.0 
@@ -52,5 +55,13 @@ public class FileSource : Machine
         // watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
     }
+    
+    public static FolderSource CreateFromJSON(Guid guid, JsonObject json)
+    {
+        var machine = new FolderSource(guid);
+        
+        machine.SetPath(json["path"]?.GetValue<string>());
 
+        return machine;
+    }
 }
