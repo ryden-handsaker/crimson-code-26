@@ -6,14 +6,14 @@ namespace CrimsonCode26.scenes.game.data.machines;
 
 public class ExtensionFilter : Machine
 {
-    private List<string> _extensions;
+    public List<string> Extensions { get; private set; }
     
     public override void Process(File file)
     {
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
-        foreach (string extension in _extensions)
+        foreach (string extension in Extensions)
         {
             if (file.Extension.Equals(extension))
             {
