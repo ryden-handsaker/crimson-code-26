@@ -14,11 +14,13 @@ public class FolderDestination : Machine, ISerializable<FolderDestination>
     {
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
         
-        if (System.IO.Path.GetDirectoryName(file.Path) is var source)
-        {
-            if (source != null)
-                Directory.Move(source, Path);
-        }
+        System.IO.File.Move(
+            file.Path,
+            System.IO.Path.Combine([
+                Path,
+                string.Concat([file.Name, file.Extension])
+            ])
+        );
     }
 
     public FolderDestination(Guid guid)
@@ -31,7 +33,7 @@ public class FolderDestination : Machine, ISerializable<FolderDestination>
         var machine = new FolderDestination(guid);
         
         if (json["path"]?.GetValue<string>() is var path)
-            machine.Path = path;
+            machine.Path = File.TildeToHome(path);
 
         return machine;
     }
