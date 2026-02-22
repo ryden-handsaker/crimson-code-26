@@ -23,6 +23,7 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
+        Godot.GD.Print($"Filter: {file.Extension} = {Extensions[0]}?"); // it's not even getting this far in example 2 rn
         if (Extensions.Any(extension => file.Extension.Equals(extension)))
         {
             Push(Outputs["Pass"]);
@@ -50,5 +51,10 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
             );
         
         return machine;
+    }
+
+    public void Tick()
+    {
+        Godot.GD.Print("ExtensionFilter Tick");
     }
 }

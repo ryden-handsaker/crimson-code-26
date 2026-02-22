@@ -9,7 +9,7 @@ public class MachineParser
 {
 	public enum Type
 	{
-		FolderSource, FolderDestination, TrashDestination, ExtensionFilter
+		FolderSource, FolderDestination, TrashDestination, ExtensionFilter, DoNothingDestination
 	}
 
 	public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
@@ -17,7 +17,8 @@ public class MachineParser
 		{ Type.FolderSource, FolderSource.CreateFromJSON },
 		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
 		{ Type.TrashDestination, TrashDestination.CreateFromJSON },
-		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
+		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON },
+		{ Type.DoNothingDestination, DoNothingDestination.CreateFromJSON },
 	};
 
 	public static Dictionary<Guid, Machine> ParseJSON(string input)
