@@ -4,7 +4,7 @@ using CrimsonCode26.scenes.game.data;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
-public class FilterExtension : Machine
+public class ExtensionFilter : Machine
 {
     private List<string> _extensions;
     
@@ -17,12 +17,17 @@ public class FilterExtension : Machine
         {
             if (file.Extension.Equals(extension))
             {
-                _outputs["Success"].Enqueue(file);
+                Outputs["Pass"].Enqueue(file);
                 ProcessFile = null;
                 return;
             }
         }
-        _outputs["Failure"].Enqueue(file);
+        Outputs["Fail"].Enqueue(file);
         ProcessFile = null;
+    }
+
+    public ExtensionFilter()
+    {
+        this.Initialize("Extension Filter");
     }
 }
