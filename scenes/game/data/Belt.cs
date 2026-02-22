@@ -8,7 +8,7 @@ public class Belt
     private const int DefaultMaxSize = 10;
     private readonly int _maxSize;
     
-    private readonly Queue<File> _queue = [];
+    public readonly Queue<File> _queue = [];
     private readonly Machine _machine;
 
     public Belt(Machine machine, int maxSize = DefaultMaxSize)
