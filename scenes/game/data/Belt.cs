@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,12 +32,16 @@ public class Belt
     {
         if (_machine.ProcessFile != null)
             _machine.Flush();
-        else if (Dequeue() is var file)
+        else if (Dequeue() is { } file)
             _machine.Process(file);
     }
 
     /*
      * Get the top file from a queue.
      */
-    public File Dequeue() => _queue.Dequeue();
+    public File Dequeue()
+    {
+        try { return _queue.Dequeue(); }
+        catch (InvalidOperationException e) { return null; }
+    } 
 }
