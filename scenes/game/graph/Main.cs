@@ -38,6 +38,11 @@ public partial class Main : HBoxContainer
 		inputNode.SetOutputConnection(outputNode.Guid, fromPort);
 	}
 
+	private void OnDisconnectRequest(StringName fromNode, int fromPort, StringName toNode, int toPort)
+	{
+		_graphEdit.DisconnectNode(fromNode, fromPort, toNode, toPort);
+	}
+
 	private void AddMachine(MachineResource resource)
 	{
 		var machineNode = _machineScene.Instantiate<MachineTemplate>();
