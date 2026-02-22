@@ -13,7 +13,7 @@ public class MachineParser
     }
 
     public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
-    {
+    {   
         { Type.FileSource, FolderSource.CreateFromJSON },
         //{ Type.FileDestination, (guid, data) => new FolderDestination(guid) },
         //{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },

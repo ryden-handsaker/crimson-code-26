@@ -1,4 +1,7 @@
 using Godot;
+using CrimsonCode26.scenes.game.data;
+
+namespace CrimsonCode26.scripts;
 
 [GlobalClass]
 public partial class MachineResource : Resource
@@ -10,8 +13,26 @@ public partial class MachineResource : Resource
     public string[] Outputs = [];
 
     [Export]
-    public string Type;
+    public MachineParser.Type Type { get; set; }
+
+    public enum OptionType
+    {
+        Integer, Float, Path, Text
+    }
+
+    [GlobalClass]
+    public partial class MachineOption : Resource
+    {
+        [Export]
+        public string Label { get; set; }
+        
+        [Export]
+        public MachineResource.OptionType Type { get; set; }
+        
+        [Export]
+        public bool IsList { get; set; }
+    }
 
     [Export]
-    public string[] Options = [];
+    public MachineOption[] Options = [];
 }

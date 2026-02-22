@@ -1,58 +1,77 @@
 using Godot;
 using Godot.Collections;
 using System;
+using CrimsonCode26.scenes.game;
+using CrimsonCode26.scripts;
+
+namespace CrimsonCode26.scenes.game.graph;
 
 public partial class GraphEdit : Godot.GraphEdit
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
-	public string toJSON()
+	public string ToJSON()
 	{
 		var dict = new Dictionary<string, Variant>();
-		foreach (Node child in GetChildren())
+		
+		foreach (var child in GetChildren())
 		{
-			if (child is MachineTemplate machine)
-			{
-				var machineData = new Dictionary<string, Variant>();
-				machineData.Add("type", machine.Type);
-
-				if (machine.Resource.Outputs.Length > 0)
-				{
-					var outputs = machine.Resource.Outputs;
-					var outputDict = new Dictionary<string, string>();
-					
-					for (int i = 0; i < outputs.Length; i++)
-					{
-						outputDict.Add(outputs[i], machine.OutputConnections[i].ToString());
-					}
-					machineData.Add("outputs", outputDict);
-				}
-
-				if (machine.Resource.Options.Length > 0)
-				{
-					var options = machine.Resource.Options;
-					var optionDict = new Dictionary<string, string[]>();
-
-					for (int i = 0; i < options.Length; i++)
-					{
-						optionDict.Add(options[i], [".txt"]); // TODO: implement this lil bro
-					}
-					machineData.Add("data", optionDict);
-				}
+			if (child is not MachineTemplate machine)
+				continue;
 			
-				dict.Add(machine.Guid.ToString(), machineData);	
+			var machineData = new Dictionary<string, Variant>
+			{
+				{ "type", machine.Type.ToString() }
+			};
+
+			if (machine.Resource.Outputs.Length > 0)
+			{
+				var outputs = machine.Resource.Outputs;
+				var outputDict = new Dictionary<string, string>();
+					
+				for (var i = 0; i < outputs.Length; i++)
+					outputDict.Add(outputs[i], machine.OutputConnections[i].ToString());
+				
+				machineData.Add("outputs", outputDict);
+			}
+
+			if (machine.Resource.Options.Length > 0)
+			{
+				var options = machine.Resource.Options;
+				var optionDict = new Dictionary<string, Variant>();
+				
+				foreach (var option in options)
+				{
+					var value = machine.GetOptionValue(option.Label);
+
+					if (option.IsList)
+					{
+						Godot.Collections.Array result = [];
+
+						foreach (var token in value.Split(','))
+							result.Add(ParseValue(option.Type, token.Trim()));
+						
+						optionDict.Add(option.Label, result);
+					}
+					else
+						optionDict.Add(option.Label, ParseValue(option.Type, value));
+
+				}
+				
+				machineData.Add("data", optionDict);
 			}
 			
+			dict.Add(machine.Guid.ToString(), machineData);
 		}
 
 		return Json.Stringify(dict);
+	}
+
+	public static Variant ParseValue(MachineResource.OptionType type, string value)
+	{
+		return type switch
+		{
+			MachineResource.OptionType.Integer => int.Parse(value),
+			MachineResource.OptionType.Float => float.Parse(value),
+			_ => value
+		};
 	}
 }
