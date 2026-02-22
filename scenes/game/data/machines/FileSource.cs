@@ -11,13 +11,12 @@ public class FileSource : Machine
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
-        Outputs["Output"].Enqueue(file);
-        ProcessFile = null;
+        Push(Outputs["Output"]);
     }
 
     private void FileCreated(object sender, FileSystemEventArgs e)
     {
-        GD.Print("File changed: {0}", e.Name);
+        GD.Print("File added: {0}", e.Name);
         Enqueue(new File(e.FullPath));
     }
 

@@ -25,11 +25,12 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
         ProcessFile = file;
         if (Extensions.Any(extension => file.Extension.Equals(extension)))
         {
-            Outputs["Pass"].Enqueue(file);
-            ProcessFile = null;
+            Push(Outputs["Pass"]);
         }
-        Outputs["Fail"].Enqueue(file);
-        ProcessFile = null;
+        else
+        {
+            Push(Outputs["Fail"]);
+        }
     }
 
     public ExtensionFilter(Guid guid)

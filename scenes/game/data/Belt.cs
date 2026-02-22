@@ -21,13 +21,18 @@ public class Belt
     {
         if (_queue.Count >= _maxSize)
             return false;
-
-        if (_machine.ProcessFile == null)
-            _machine.Process(file);
-        else
-            _queue.Enqueue(file);
+        
+        _queue.Enqueue(file);
 
         return true;
+    }
+
+    public void Tick()
+    {
+        if (_machine.ProcessFile != null)
+            _machine.Flush();
+        else if (Dequeue() is var file)
+            _machine.Process(file);
     }
 
     /*
