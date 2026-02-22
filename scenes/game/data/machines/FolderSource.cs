@@ -2,12 +2,14 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Nodes;
-using Godot;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
 public class FolderSource : Machine, ISerializable<FolderSource>
 {
+    public bool Initialized { get; private set; }
+    public string Path { get; private set; }
+    
     public override void Process(File file)
     {
         if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
@@ -18,25 +20,32 @@ public class FolderSource : Machine, ISerializable<FolderSource>
 
     private void FileCreated(object sender, FileSystemEventArgs e)
     {
-        GD.Print("File added: {0}", e.Name);
+        Godot.GD.Print("File added: {0}", e.Name);
         Enqueue(new File(e.FullPath));
     }
 
     public FolderSource(Guid guid)
     {
         Initialize(guid);
-        Belt = new Belt(this, 100);
+        Belt = new Belt(this, 500);
+        Initialized = false;
     }
     
-    private void SetPath(string path) // allows you to change but is it necessary?
+    private void ReadFiles()
     {
-        var pathToSearch = File.TildeToHome(path);
-        GD.Print($"{pathToSearch}");
+        var pathToSearch = File.TildeToHome(Path);
+        if (!System.IO.Directory.Exists(pathToSearch))
+        {
+            Godot.GD.PrintErr($"{pathToSearch} does not exist");
+            BadState = true;
+            return;
+        }
         
         foreach (var file in Directory.GetFiles(pathToSearch))
         {
             if (!Enqueue(new File(file)))
-                GD.PrintErr("Maximum file count exceeded"); // TODO: just a current limitation of the architecture
+                // HACK: limitation of the architecture for  big folders
+                Godot.GD.PrintErr("Maximum file count exceeded"); 
         }
 
         // https://learn.microsoft.com/en-us/dotnet/api/system.io.filesystemwatcher?view=net-10.0 
@@ -52,19 +61,27 @@ public class FolderSource : Machine, ISerializable<FolderSource>
                                | NotifyFilters.Security
                                | NotifyFilters.Size;
 
-        // watcher.Changed += OnChanged; // maybe someday
+        watcher.Changed += FileCreated; // maybe someday
         watcher.Created += FileCreated;
 
         // watcher.IncludeSubdirectories = true;
         watcher.EnableRaisingEvents = true;
+        Initialized = true;
     }
     
     public static FolderSource CreateFromJSON(Guid guid, JsonObject json)
     {
         var machine = new FolderSource(guid);
-        
-        machine.SetPath(json["path"]?.GetValue<string>());
+
+        machine.Path = json["path"]?.GetValue<string>();
 
         return machine;
+    }
+
+    public override void Tick()
+    {
+        if (!Initialized && !BadState)
+            ReadFiles();
+        Belt.Tick();
     }
 }
