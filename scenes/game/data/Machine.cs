@@ -24,9 +24,6 @@ public abstract class Machine
     }
     
     public abstract void Process(File file);
-        // await input belt
-        // Do processing
-        // await Outputs.get("Success").receive(file);
 
     public bool AddConnection(string name, Machine machine) =>  machine == null ? throw new ArgumentNullException(nameof(machine)) : Outputs.TryAdd(name, machine);
 
