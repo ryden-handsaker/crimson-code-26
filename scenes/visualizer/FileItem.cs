@@ -1,18 +1,25 @@
 using Godot;
 using System;
+using System.Net;
 
 public partial class FileItem : PathFollow2D
 {
-	[Export] protected string fileName = "";
+	[Export] public string fileName = "";
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	async public override void _Ready()
 	{
-		ProgressRatio = 0;
-	}
+		GetNode<Label>("%Label").Text = fileName;
+		var tween = CreateTween();
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		ProgressRatio += (float)(delta / 10);
+		tween.TweenProperty(
+			this,
+			"progress_ratio",
+			1.0f,
+			1.0f
+		);
+
+		await ToSignal(tween, Tween.SignalName.Finished);
+
+    	this.QueueFree();
 	}
 }

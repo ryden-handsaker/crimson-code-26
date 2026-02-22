@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cawsxk1pg8l88" path="res://scenes/visualizer/Visualizer.cs" id="1_n004b"]
 [ext_resource type="Texture2D" uid="uid://c6mu5jtjro35j" path="res://assets/atlas.png" id="2_hf8o8"]
 [ext_resource type="Texture2D" uid="uid://d184qevestsr8" path="res://assets/dev_texture.png" id="2_nnkq8"]
+[ext_resource type="PackedScene" uid="uid://c7hpowtnbimla" path="res://scenes/visualizer/file_item.tscn" id="2_orc4s"]
 [ext_resource type="FontFile" uid="uid://btiarw284y3re" path="res://assets/Minecraft.ttf" id="4_ecwl4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ecwl4"]
@@ -39,6 +40,7 @@ Label/fonts/font = ExtResource("4_ecwl4")
 script = ExtResource("1_n004b")
 JsonMap = "{\"00e25d28-0e87-420c-a6d3-2c761f67a9da\":{\"data\":{\"path\":\"/home/guppy/Documents/NewProgramming/Godot/crimson-code-26/test/files\"},\"type\":\"FolderDestination\"},\"2bbf5617-97f7-41f7-867c-7e40b0e4816b\":{\"data\":{\"extensions\":[\".txt\"]},\"outputs\":{\"Fail\":\"3877a5fb-3129-4e71-aa22-3039b7606c8c\",\"Match\":\"00e25d28-0e87-420c-a6d3-2c761f67a9da\"},\"type\":\"ExtensionFilter\"},\"3877a5fb-3129-4e71-aa22-3039b7606c8c\":{\"data\":{\"path\":\"/home/guppy/Documents/NewProgramming/Godot/crimson-code-26/test\"},\"type\":\"FolderDestination\"},\"ab37bed5-9a79-4ce7-bd8e-fcc74c6c76e5\":{\"data\":{\"path\":\"/home/guppy/Documents/NewProgramming/Godot/crimson-code-26/test\"},\"outputs\":{\"Output\":\"2bbf5617-97f7-41f7-867c-7e40b0e4816b\"},\"type\":\"FolderSource\"}}
 "
+ItemScene = ExtResource("2_orc4s")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1016484079]
 unique_name_in_owner = true
@@ -66,5 +68,7 @@ text = "Tick"
 
 [node name="Paths" type="Node2D" parent="." unique_id=1875578796]
 unique_name_in_owner = true
+
+[node name="TiTimer" type="Timer" parent="." unique_id=1302427635]
 
 [connection signal="pressed" from="TickButton" to="." method="OnTickButtonPressed"]
