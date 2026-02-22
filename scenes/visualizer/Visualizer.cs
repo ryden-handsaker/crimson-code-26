@@ -176,7 +176,7 @@ public partial class Visualizer : Node2D
 
 		curve.AddPoint(startPos * 32);
 		curve.AddPoint(startPos with { Y = endPos.Y } * 32);
-		curve.AddPoint(endPos * 32 + new Vector2I(32, 0));
+		curve.AddPoint(endPos * 32);
 		path.Curve = curve;
 
 		_pathContainer.AddChild(path);
