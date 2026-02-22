@@ -9,7 +9,10 @@ public static class MachineParser
 {
 	public enum Type
 	{
-		FolderSource, FolderDestination, TrashDestination, ExtensionFilter, DoNothingDestination
+		FolderSource,
+		FolderDestination, TrashDestination, DoNothingDestination, OpenDestination,
+		ExtensionFilter,
+		RenameModifier
 	}
 
 	public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
@@ -93,6 +96,8 @@ public static class MachineParser
 			Type.ExtensionFilter => "Extension Filter",
 			Type.TrashDestination => "Trash",
 			Type.DoNothingDestination => "Do Nothing",
+			Type.OpenDestination => "Open",
+			Type.RenameModifier => "Rename",
 			_ => throw new ArgumentException("unknown type")
 		};
 	}

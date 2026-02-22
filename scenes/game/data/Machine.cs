@@ -80,6 +80,8 @@ public abstract class Machine
             not null when type == typeof(ExtensionFilter) => "Extension Filter",
             not null when type == typeof(TrashDestination) => "Trash",
             not null when type == typeof(DoNothingDestination) => "Do Nothing",
+            not null when type == typeof(OpenDestination) => "Open",
+            not null when type == typeof(RenameModifier) => "Rename",
             _ => throw new ArgumentException("unknown type")
         };
     }

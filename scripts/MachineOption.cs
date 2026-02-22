@@ -7,6 +7,9 @@ public partial class MachineOption : Resource
 {
     [Export]
     public string Label { get; set; }
+    
+    [Export]
+    public string Key { get; set; }
         
     public enum OptionType
     {

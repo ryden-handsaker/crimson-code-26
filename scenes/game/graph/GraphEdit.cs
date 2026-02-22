@@ -38,7 +38,7 @@ public partial class GraphEdit : Godot.GraphEdit
 				
 				foreach (var option in options)
 				{
-					var value = machine.GetOptionValue(option.Label);
+					var value = machine.GetOptionValue(option.Key);
 
 					if (option.IsList)
 					{
@@ -47,10 +47,10 @@ public partial class GraphEdit : Godot.GraphEdit
 						foreach (var token in value.Split(','))
 							result.Add(ParseValue(option.Type, token.Trim()));
 						
-						optionDict.Add(option.Label, result);
+						optionDict.Add(option.Key, result);
 					}
 					else
-						optionDict.Add(option.Label, ParseValue(option.Type, value));
+						optionDict.Add(option.Key, ParseValue(option.Type, value));
 
 				}
 				

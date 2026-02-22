@@ -40,9 +40,9 @@ public partial class MachineTemplate : GraphNode
 		foreach (var option in machine.Options)
 		{
 			if (option.Type == MachineOption.OptionType.Path)
-				AddFileOption(option.Label);
+				AddFileOption(option.Label, option.Key);
 			else
-				AddOption(option.Label);
+				AddOption(option.Label, option.Key);
 		}
 		
 		foreach (var output in machine.Outputs)
@@ -81,7 +81,7 @@ public partial class MachineTemplate : GraphNode
 		_outputPort++;
 	}
 
-	private void AddOption(string label)
+	private void AddOption(string label, string key)
 	{
 		var hbox = new HBoxContainer();
 		
@@ -97,7 +97,7 @@ public partial class MachineTemplate : GraphNode
 			SizeFlagsVertical = SizeFlags.ExpandFill
 		};
 		
-		_optionInputs[label] = textEdit;
+		_optionInputs[key] = textEdit;
 		
 		hbox.AddChild(text);
 		hbox.AddChild(textEdit);
@@ -105,7 +105,7 @@ public partial class MachineTemplate : GraphNode
 		AddChild(hbox);
 	}
 	
-	private void AddFileOption(string label)
+	private void AddFileOption(string label, string key)
 	{
 		var hbox = new HBoxContainer();
 		
@@ -121,7 +121,7 @@ public partial class MachineTemplate : GraphNode
 			SizeFlagsVertical = SizeFlags.ExpandFill
 		};
 
-		_optionInputs[label] = textEdit;
+		_optionInputs[key] = textEdit;
 
 		var browseButton = new Button { Icon = GD.Load<Texture2D>("res://assets/FolderBrowse.svg") };
 
@@ -149,10 +149,10 @@ public partial class MachineTemplate : GraphNode
 		_outputConnections[slotId - Resource.Inputs.Length + Resource.Options.Length - 1] = output;
 	}
 
-	public string GetOptionValue(string label)
+	public string GetOptionValue(string key)
 	{
-		return _optionInputs.TryGetValue(label, out var input)
+		return _optionInputs.TryGetValue(key, out var input)
 			? input.Text
-			: throw new KeyNotFoundException($"option {label} not found");
+			: throw new KeyNotFoundException($"option '{key}' not found");
 	}
 }

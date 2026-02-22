@@ -7,6 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://d0wxej52ao5gl" path="res://scenes/game/machine_button.tscn" id="5_66dbo"]
 [ext_resource type="Resource" uid="uid://ra6fcrry7ilc" path="res://resources/folder_destination.tres" id="6_pm8bl"]
 [ext_resource type="Resource" uid="uid://c6u3wo50mr5dm" path="res://resources/extension_filter.tres" id="7_mleqn"]
+[ext_resource type="Resource" uid="uid://cjq6l6uid0uvv" path="res://resources/open_destination.tres" id="8_spg6q"]
+[ext_resource type="Resource" uid="uid://cn5nt3j8muu37" path="res://resources/rename_modifier.tres" id="9_exqpb"]
+[ext_resource type="Resource" uid="uid://c7tgvifxj4ysg" path="res://resources/trash_destination.tres" id="10_8d7qk"]
+[ext_resource type="Resource" uid="uid://da7l4jx5e0wiw" path="res://resources/do_nothing_destination.tres" id="11_stwoq"]
 
 [sub_resource type="Theme" id="Theme_66dbo"]
 
@@ -25,6 +29,7 @@ _machineScene = ExtResource("2_eofdk")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+scroll_offset = Vector2(-70, 0)
 grid_pattern = 1
 panning_scheme = 1
 minimap_enabled = false
@@ -61,9 +66,25 @@ _resource = ExtResource("6_pm8bl")
 layout_mode = 2
 _resource = ExtResource("7_mleqn")
 
+[node name="Open Destination" parent="Panel/ScrollContainer/Buttons" unique_id=755537059 instance=ExtResource("5_66dbo")]
+layout_mode = 2
+_resource = ExtResource("8_spg6q")
+
+[node name="Rename Modifier" parent="Panel/ScrollContainer/Buttons" unique_id=2020599682 instance=ExtResource("5_66dbo")]
+layout_mode = 2
+_resource = ExtResource("9_exqpb")
+
+[node name="Trash Destination" parent="Panel/ScrollContainer/Buttons" unique_id=1255482509 instance=ExtResource("5_66dbo")]
+layout_mode = 2
+_resource = ExtResource("10_8d7qk")
+
+[node name="Do Nothing Destination" parent="Panel/ScrollContainer/Buttons" unique_id=812840402 instance=ExtResource("5_66dbo")]
+layout_mode = 2
+_resource = ExtResource("11_stwoq")
+
 [node name="Button" type="Button" parent="." unique_id=1905827587]
 layout_mode = 2
-text = "HI"
+text = "Simulate"
 
 [connection signal="connection_request" from="GraphEdit" to="." method="OnConnectionRequest"]
 [connection signal="button_down" from="Button" to="." method="OnButtonButtonDown"]
