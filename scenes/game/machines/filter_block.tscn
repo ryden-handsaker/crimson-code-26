@@ -1,15 +1,16 @@
 [gd_scene format=3 uid="uid://bjn8clfqdjrcv"]
 
-[ext_resource type="Script" uid="uid://druhyljlb4exw" path="res://scenes/game/blocks/FilterMachine.cs" id="1_lseaw"]
+[ext_resource type="Script" uid="uid://druhyljlb4exw" path="res://scenes/game/machines/FilterMachine.cs" id="1_lseaw"]
 [ext_resource type="Texture2D" uid="uid://nmdesl6dxyqg" path="res://icon.svg" id="2_lseaw"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lseaw"]
+[sub_resource type="Theme" id="Theme_lseaw"]
+GraphNode/constants/separation = 10
 
-[node name="FilterMachine" type="GraphNode" unique_id=1806822129]
+[node name="FilterMachine" type="GraphNode" unique_id=799989801]
 offset_right = 209.0
-offset_bottom = 231.0
-theme_override_constants/separation = 10
-theme_override_styles/titlebar = SubResource("StyleBoxEmpty_lseaw")
+offset_bottom = 218.0
+theme = SubResource("Theme_lseaw")
+title = "File Extension Filter"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -32,7 +33,7 @@ slot/2/left_enabled = false
 slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
 slot/2/left_icon = null
-slot/2/right_enabled = false
+slot/2/right_enabled = true
 slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
@@ -48,25 +49,24 @@ layout_mode = 2
 
 [node name="Input" type="Label" parent="HBoxContainer" unique_id=1651583155]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Input"
 
 [node name="Output" type="Label" parent="HBoxContainer" unique_id=714886268]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Output"
+text = "Match"
 horizontal_alignment = 2
 
-[node name="MenuButton" type="OptionButton" parent="." unique_id=2134580215]
+[node name="MenuButton" type="TextEdit" parent="." unique_id=682047337]
 layout_mode = 2
-item_count = 2
-popup/item_0/text = ".png"
-popup/item_0/id = 0
-popup/item_1/text = ".txt"
-popup/item_1/id = 1
+size_flags_vertical = 3
+theme_override_constants/line_spacing = -3
+text = "fsdf
+sdfsdf
+sdf
+sdf"
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1141178963]
-visible = false
+[node name="Fail" type="Label" parent="." unique_id=657323339]
 layout_mode = 2
-texture = ExtResource("2_lseaw")
-stretch_mode = 3
+text = "Fail"
+horizontal_alignment = 2

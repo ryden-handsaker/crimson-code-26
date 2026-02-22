@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 [GlobalClass]
@@ -10,47 +11,47 @@ public partial class VerticalGraphEdit : GraphEdit
         //DisconnectionRequest += OnDisconnectionRequest;
     }
 
-    //override public Vector2[] _GetConnectionLine(Vector2 fromPosition, Vector2 toPosition)
-    // {
-    //     bool fromFound = false;
-    //     bool toFound = false;
+    override public Vector2[] _GetConnectionLine(Vector2 fromPosition, Vector2 toPosition)
+    {
+        bool fromFound = false;
+        bool toFound = false;
 
-    //     Vector2[] line = [];
+        List<Vector2> line = [];
 
-    //     foreach (Node child in GetChildren())
-    //     {
-    //         if (child is VerticalGraphNode node)
-    //         {
-    //             for (int port = 0; port < node.GetInputPortCount(); port++)
-    //             {
-    //                 if ((node.Position + node.GetInputPortPosition(port)).IsEqualApprox(toPosition))
-    //                 {
-    //                     line = line.Append(node.GetVerticalInputPosition(port));
-    //                     toFound = true;
-    //                     break;
-    //                 }
-    //             }
+        foreach (Node child in GetChildren())
+        {
+            if (child is VerticalGraphNode node)
+            {
+                for (int port = 0; port < node.GetInputPortCount(); port++)
+                {
+                    if ((node.Position + node.GetInputPortPosition(port)).IsEqualApprox(toPosition))
+                    {
+                        line.Add(node.GetVerticalInputPosition(port));
+                        toFound = true;
+                        break;
+                    }
+                }
 
-    //             for (int port = 0; port < node.GetOutputPortCount(); port++)
-    //             {
-    //                 if ((node.Position + node.GetOutputPortPosition(port)).IsEqualApprox(fromPosition))
-    //                 {
-    //                     line.Append(node.GetVerticalOutputPosition(port));
-    //                     fromFound = true;
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
+                for (int port = 0; port < node.GetOutputPortCount(); port++)
+                {
+                    if ((node.Position + node.GetOutputPortPosition(port)).IsEqualApprox(fromPosition))
+                    {
+                        line.Add(node.GetVerticalOutputPosition(port));
+                        fromFound = true;
+                        break;
+                    }
+                }
+            }
+        }
 
-    //     if (!fromFound)
-    //         line.Append(fromPosition);
+        if (!fromFound)
+            line.Add(fromPosition);
 
-    //     if (!toFound)
-    //         line.Append(toPosition);
+        if (!toFound)
+            line.Add(toPosition);
 
-    //     return line;
-    // }
+        return line.ToArray();
+    }
 
     // Optional: tweak this for the "radius" of the hotzone
     private Vector2I DefaultPortSize = new(8, 8);

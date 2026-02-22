@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c66a1oomtayeu"]
+
+[ext_resource type="Script" uid="uid://buyr2ow0er1pk" path="res://scenes/game/MachineTemplate.cs" id="1_7fmpx"]
+[ext_resource type="Script" uid="uid://dmdmt8sp7skwo" path="res://scripts/MachineResource.cs" id="2_qmklj"]
+
+[sub_resource type="Resource" id="Resource_61yut"]
+script = ExtResource("2_qmklj")
+Inputs = PackedStringArray("Input")
+Outputs = PackedStringArray("Match", "Fail")
+Type = "FilterExtension"
+Options = PackedStringArray("extension")
+metadata/_custom_type_script = "uid://dmdmt8sp7skwo"
+
+[node name="MachineTemplate" type="GraphNode" unique_id=1033405312]
+offset_right = 253.0
+offset_bottom = 66.0
+theme_override_constants/separation = 10
+title = "FilterExtension"
+script = ExtResource("1_7fmpx")
+machine = SubResource("Resource_61yut")
