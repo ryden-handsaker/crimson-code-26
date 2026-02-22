@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MachineResource" format=3 uid="uid://c6u3wo50mr5dm"]
+[gd_resource type="Resource" format=3 uid="uid://c6u3wo50mr5dm"]
 
 [ext_resource type="Script" uid="uid://dmdmt8sp7skwo" path="res://scripts/MachineResource.cs" id="1_f1j50"]
 
