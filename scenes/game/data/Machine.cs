@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CrimsonCode26.scenes.game.data.machines;
 
 namespace CrimsonCode26.scenes.game.data;
@@ -13,6 +14,8 @@ public abstract class Machine
     /// Set when a file is processed and waiting to be pushed (null otherwise)
     public Machine PushTarget { get; protected set; }
     
+    public bool BadState { get; protected set; }
+    
     /// Map of machines to push to
     public readonly System.Collections.Generic.Dictionary<string, Machine> Outputs = new();
     /// Input belt
@@ -24,6 +27,7 @@ public abstract class Machine
         Id = guid;
         ProcessFile = null;
         PushTarget = null;
+        BadState = false;
         Belt = new Belt(this);
     }
 
@@ -69,7 +73,12 @@ public abstract class Machine
     public bool Enqueue(File file) => Belt.Enqueue(file);
 
     /// Ticks the machine
-    public void Tick() => Belt.Tick();
+    public virtual void Tick() => Belt.Tick();
+
+    public Queue<File> GetBeltState()
+    {
+        return Belt._queue;  
+    } 
     
     public static string GetName(System.Type type)
     {
@@ -80,8 +89,8 @@ public abstract class Machine
             not null when type == typeof(ExtensionFilter) => "Extension Filter",
             not null when type == typeof(TrashDestination) => "Trash",
             not null when type == typeof(DoNothingDestination) => "Do Nothing",
-            not null when type == typeof(OpenDestination) => "Open",
-            not null when type == typeof(RenameModifier) => "Rename",
+            not null when type == typeof(OpenDestination) => "Open File",
+            not null when type == typeof(RenameModifier) => "Rename File",
             _ => throw new ArgumentException("unknown type")
         };
     }
