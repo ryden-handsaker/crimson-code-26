@@ -8,9 +8,13 @@ using Godot;
 public partial class Visualizer : Node2D
 {
     [Export(PropertyHint.MultilineText)] public string JsonMap;
+	[Export] public PackedScene ItemScene;
 	private Dictionary<Guid, Machine> ParsedMachines;
 	private TileMapLayer _tileMap;
 	private Control _nameContainer;
+	private Node2D _pathContainer;
+
+	private Dictionary<Guid, Path2D> _paths = new();
 
 	//private var conveyorStraightDirections;
 
@@ -18,10 +22,9 @@ public partial class Visualizer : Node2D
 	{
 		_tileMap = GetNode<TileMapLayer>("%TileMapLayer");
 		_nameContainer = GetNode<Control>("%MachineNames");
+		_pathContainer = GetNode<Node2D>("%Paths");
 		//_tileMap.GetCellAlternativeTile()
 		Visualize();
-
-		Tick();
 	}
 
 	public void Visualize()
@@ -35,15 +38,51 @@ public partial class Visualizer : Node2D
 		DrawMachineAndOutputs(source, new Vector2I(2, 2));
 	}
 
-	private void Tick()
+	private void AddMachineAndOutputs(List<Machine> updateOrder, Machine machine)
 	{
-		foreach (Machine machine in ParsedMachines.Values)
+        updateOrder.Add(machine);
+		foreach (Machine machineOut in machine.Outputs.Values)
 		{
-			machine.Tick();
-			if (machine.GetBeltState().Count > 0)
-				GD.Print(machine.GetBeltState().Peek().Name);
+			AddMachineAndOutputs(updateOrder, machineOut);
 		}
 	}
+
+	private Stack<Machine> GetUpdateOrder()
+	{
+		List<Machine> updateOrder = new();
+		foreach (Machine machine in ParsedMachines.Values)
+		{
+			if (machine is FolderSource)
+			{
+				AddMachineAndOutputs(updateOrder, machine);
+			}
+		}
+
+		return new Stack<Machine>(updateOrder);
+	}
+
+	private void Tick()
+	{
+		// create reversed update order
+		Stack<Machine> updateOrder = GetUpdateOrder();
+
+		while (updateOrder.Count > 0)
+		{
+			var machine = updateOrder.Pop();
+			machine.Tick();
+		}
+
+		foreach (Machine machine in ParsedMachines.Values)
+		{
+			if (machine.GetBeltState().Count > 0)
+			{
+
+				//_paths[machine.Id].AddChild
+			}
+		}
+	}
+
+	
 
 	private FolderSource FindFileSource()
 	{
@@ -89,7 +128,7 @@ public partial class Visualizer : Node2D
 
 			failPathDistance = DrawMachineAndOutputs(nextMachine, pos + bottomMachineOffset);
 			failPathDistance += bottomMachineOffset.X;
-			DrawConveyorBelts(pos + bottomConveyorOutputOffset, pos + bottomMachineOffset + conveyorInputOffset);
+			DrawConveyorBelts(pos + bottomConveyorOutputOffset, pos + bottomMachineOffset + conveyorInputOffset, nextMachine.Id);
 			break;
 		}
 
@@ -101,13 +140,24 @@ public partial class Visualizer : Node2D
 			var offset = new Vector2I(failPathDistance, 0); // offset x to make room for the fail path
 			passPathDistance = DrawMachineAndOutputs(nextMachine, pos + offset + rightMachineOffset);
 			passPathDistance += rightMachineOffset.X;
-			DrawConveyorBelts(pos + rightConveyorOutputOffset, pos + offset + rightMachineOffset + conveyorInputOffset);
+			DrawConveyorBelts(pos + rightConveyorOutputOffset, pos + offset + rightMachineOffset + conveyorInputOffset, nextMachine.Id);
 		}
 		return failPathDistance + passPathDistance;
 	}
 
-	private void DrawConveyorBelts(Vector2I startPos, Vector2I endPos)
+	private void DrawConveyorBelts(Vector2I startPos, Vector2I endPos, Guid machineGuid)
 	{
+		var path = new Path2D();
+		var curve = new Curve2D();
+
+		curve.AddPoint(startPos * 32);
+		curve.AddPoint(startPos with { Y = endPos.Y } * 32);
+		curve.AddPoint(endPos * 32);
+		path.Curve = curve;
+
+		_pathContainer.AddChild(path);
+		_paths.Add(machineGuid, path);
+
 		const int rotateRight = (int)TileSetAtlasSource.TransformTranspose | (int)TileSetAtlasSource.TransformFlipH;
 		const int rotate180 = (int)TileSetAtlasSource.TransformTranspose;
 		for (int y = startPos.Y; y < endPos.Y; y++) // conveyor belts should only ever go from top left to bottom right
@@ -122,5 +172,59 @@ public partial class Visualizer : Node2D
 		{
 			_tileMap.SetCell(endPos with { X = x }, 0, new Vector2I(0, 0), rotateRight);
 		}
+	}
+
+	private void OnTickButtonPressed()
+	{
+		Tick();
+	}
+
+	private Stack<Machine> BackPropagate(Machine endMachine)
+	{
+		// Build reverse lookup: machineId, machines that output to it
+		var reverseMap = new Dictionary<Guid, List<Machine>>();
+
+		foreach (var machine in ParsedMachines.Values)
+		{
+			foreach (var target in machine.Outputs.Values)
+			{
+				if (!reverseMap.ContainsKey(target.Id))
+					reverseMap[target.Id] = new List<Machine>();
+				reverseMap[target.Id].Add(machine);
+			}
+		}
+
+		// BFS backwards from end machine
+		var visited = new HashSet<Guid>();
+		var queue   = new Queue<Machine>();
+		var ordered = new List<Machine>();
+
+		queue.Enqueue(endMachine);
+		visited.Add(endMachine.Id);
+
+		while (queue.Count > 0)
+		{
+			var current = queue.Dequeue();
+			ordered.Add(current);
+
+			if (!reverseMap.TryGetValue(current.Id, out var parents))
+				continue;
+
+			foreach (var parent in parents)
+			{
+				if (visited.Contains(parent.Id)) continue;
+				visited.Add(parent.Id);
+				queue.Enqueue(parent);
+			}
+		}
+
+		ordered.Reverse();
+
+		// Reverse so stack pops source-first, end machine last
+		var result = new Stack<Machine>();
+		foreach (var machine in ordered)
+			result.Push(machine);
+
+		return result;
 	}
 }
