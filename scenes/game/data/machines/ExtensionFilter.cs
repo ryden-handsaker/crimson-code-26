@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json.Nodes;
-using CrimsonCode26.scenes.game.data;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
@@ -11,7 +11,7 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
 {
     private List<string> _extensions = [];
     
-    public IReadOnlyList<string> Extensions => _extensions;
+    public ImmutableList<string> Extensions => _extensions.ToImmutableList();
     
     private void SetExtensions(IEnumerable<string> extensions)
     {
@@ -20,23 +20,18 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
     
     public override void Process(File file)
     {
-        if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
+        if (ProcessFile != null)
+            throw new InvalidAsynchronousStateException(); // eh
         
         ProcessFile = file;
         Godot.GD.Print($"Filter: {file.Extension} = {Extensions[0]}?"); // it's not even getting this far in example 2 rn
-        if (Extensions.Any(extension => file.Extension.Equals(extension)))
-        {
-            Push(Outputs["Pass"]);
-        }
-        else
-        {
-            Push(Outputs["Fail"]);
-        }
+        
+        Push(Extensions.Any(extension => file.Extension.Equals(extension)) ? Outputs["Pass"] : Outputs["Fail"]);
     }
 
     public ExtensionFilter(Guid guid)
     {
-        this.Initialize("Extension Filter", guid);
+        this.Initialize(guid);
     }
 
     public static ExtensionFilter CreateFromJSON(Guid guid, JsonObject json)
@@ -53,7 +48,7 @@ public class ExtensionFilter : Machine, ISerializable<ExtensionFilter>
         return machine;
     }
 
-    public void Tick()
+    public new void Tick()
     {
         Godot.GD.Print("ExtensionFilter Tick");
     }

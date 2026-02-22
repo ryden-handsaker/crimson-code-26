@@ -24,14 +24,15 @@ public class FolderSource : Machine, ISerializable<FolderSource>
 
     public FolderSource(Guid guid)
     {
-        Initialize("Folder Source", guid);
+        Initialize(guid);
         Belt = new Belt(this, 100);
     }
     
     private void SetPath(string path) // allows you to change but is it necessary?
     {
-        string pathToSearch = File.TildeToHome(path);
+        var pathToSearch = File.TildeToHome(path);
         GD.Print($"{pathToSearch}");
+        
         foreach (var file in Directory.GetFiles(pathToSearch))
         {
             if (!Enqueue(new File(file)))

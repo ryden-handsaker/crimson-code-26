@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d0wxej52ao5gl"]
 
-[ext_resource type="Script" path="res://scenes/game/MachineButton.cs" id="1_4hxf5"]
+[ext_resource type="Script" uid="uid://bkpsfxdrc5b7u" path="res://scenes/game/MachineButton.cs" id="1_4hxf5"]
 
 [node name="MachineButton" type="Button" unique_id=816893365]
 custom_minimum_size = Vector2(0, 100)

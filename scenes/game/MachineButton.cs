@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using CrimsonCode26.scenes.game.data;
 using CrimsonCode26.scripts;
 
 namespace CrimsonCode26.scenes.game;
@@ -15,7 +15,9 @@ public partial class MachineButton : Button
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Text = _resource.Type.ToString();
+		GD.Print(_resource.Type.ToString());
+		
+		Text = MachineParser.GetName(_resource.Type);
 	}
 
 	private void OnPressed()

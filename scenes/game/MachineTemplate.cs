@@ -21,14 +21,10 @@ public partial class MachineTemplate : GraphNode
 
 	private int _outputPort; // keeps track of the output port mapping (after input and options node ports)
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		
-	}
-
 	public void Initialize(MachineResource machine)
 	{
+		Title = MachineParser.GetName(machine.Type);
+		
 		Guid = Guid.NewGuid();
 		Type = machine.Type;
 
@@ -37,15 +33,13 @@ public partial class MachineTemplate : GraphNode
 		_outputConnections = new Guid[machine.Outputs.Length];
 		
 		Resource = machine;
-		
-		Title = machine.Type.ToString();
 
-		if (machine.Inputs.First() is var input)
-			AddInput(input); // there can only be one input max, so we just do that lowk
+		if (machine.Inputs.Length > 0)
+			AddInput(machine.Inputs.First()); // there can only be one input max, so we just do that lowk
 
 		foreach (var option in machine.Options)
 		{
-			if (option.Type == MachineResource.OptionType.Path)
+			if (option.Type == MachineOption.OptionType.Path)
 				AddFileOption(option.Label);
 			else
 				AddOption(option.Label);
@@ -129,17 +123,17 @@ public partial class MachineTemplate : GraphNode
 
 		_optionInputs[label] = textEdit;
 
-		var browseButton = new Button { Icon = GetThemeIcon("Folder", "EditorIcons") };
+		var browseButton = new Button { Icon = GD.Load<Texture2D>("res://assets/FolderBrowse.svg") };
 
 		var fileDialog = new FileDialog
 		{
-			FileMode = FileDialog.FileModeEnum.OpenFile,
+			FileMode = FileDialog.FileModeEnum.OpenDir,
 			Access = FileDialog.AccessEnum.Filesystem
 		};
 
 		browseButton.Pressed += () => fileDialog.PopupCentered();
 		
-		fileDialog.FileSelected += (path) => textEdit.Text = path;
+		fileDialog.DirSelected += (path) => textEdit.Text = path;
 		
 		hbox.AddChild(text);
 		hbox.AddChild(textEdit);
@@ -151,7 +145,8 @@ public partial class MachineTemplate : GraphNode
 
 	public void SetOutputConnection(Guid output, int slotId)
 	{
-		_outputConnections[slotId - Resource.Inputs.Length + Resource.Options.Length] = output;
+		//GD.Print(slotId - Resource.Inputs.Length + Resource.Options.Length - 1);
+		_outputConnections[slotId - Resource.Inputs.Length + Resource.Options.Length - 1] = output;
 	}
 
 	public string GetOptionValue(string label)

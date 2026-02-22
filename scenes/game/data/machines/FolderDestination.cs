@@ -1,15 +1,13 @@
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Text.Json.Nodes;
-using Godot;
 
 namespace CrimsonCode26.scenes.game.data.machines;
 
 public class FolderDestination : Machine, ISerializable<FolderDestination>
 {
 	public string Path { get; protected set; }
-	
+
 	public override void Process(File file)
 	{
 		if (ProcessFile != null) throw new InvalidAsynchronousStateException(); // eh
@@ -25,7 +23,7 @@ public class FolderDestination : Machine, ISerializable<FolderDestination>
 
 	public FolderDestination(Guid guid)
 	{
-		Initialize("Folder Destination", guid);
+		Initialize(guid);
 	}
 	
 	public static FolderDestination CreateFromJSON(Guid guid, JsonObject json)

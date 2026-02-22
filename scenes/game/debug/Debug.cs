@@ -3,10 +3,12 @@ using System;
 using CrimsonCode26.scenes.game.data;
 using System.Collections.Generic;
 
+namespace  CrimsonCode26.scenes.game.debug;
+
 public partial class Debug : Node2D
 {
-	private Dictionary<Guid, Machine> parsedMachines;
-	private double timeSinceLastTick = 0.0;
+	private Dictionary<Guid, Machine> _parsedMachines;
+	private double _timeSinceLastTick = 0.0;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -56,7 +58,7 @@ public partial class Debug : Node2D
 					}
 """;
 		GD.Print($"Start of Debug.cs _Ready");
-		parsedMachines = MachineParser.ParseJSON(json2);
+		_parsedMachines = MachineParser.ParseJSON(json2);
 		// GD.Print($"{parsedMachines[Guid.Parse("2df0450e-6839-44a6-b976-db91370d1bd7")]}");
 		GD.Print($"End of Debug.cs _Ready");
 	}
@@ -64,14 +66,14 @@ public partial class Debug : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		timeSinceLastTick += delta;
-		if (timeSinceLastTick > 0.2)
+		_timeSinceLastTick += delta;
+		if (_timeSinceLastTick > 0.2)
 		{
-			timeSinceLastTick = 0.0;
+			_timeSinceLastTick = 0.0;
 			GD.Print("\n");
-			foreach (var (guid, machine) in parsedMachines)
+			foreach (var (guid, machine) in _parsedMachines)
 			{
-				GD.Print($"{machine.Name}: {guid}");
+				GD.Print($"{machine.GetType()}: {guid}");
 				machine.Tick();
 			}
 		}

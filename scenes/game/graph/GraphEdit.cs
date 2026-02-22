@@ -1,7 +1,5 @@
 using Godot;
 using Godot.Collections;
-using System;
-using CrimsonCode26.scenes.game;
 using CrimsonCode26.scripts;
 
 namespace CrimsonCode26.scenes.game.graph;
@@ -44,7 +42,7 @@ public partial class GraphEdit : Godot.GraphEdit
 
 					if (option.IsList)
 					{
-						Godot.Collections.Array result = [];
+						Array result = [];
 
 						foreach (var token in value.Split(','))
 							result.Add(ParseValue(option.Type, token.Trim()));
@@ -65,12 +63,12 @@ public partial class GraphEdit : Godot.GraphEdit
 		return Json.Stringify(dict);
 	}
 
-	public static Variant ParseValue(MachineResource.OptionType type, string value)
+	public static Variant ParseValue(MachineOption.OptionType type, string value)
 	{
 		return type switch
 		{
-			MachineResource.OptionType.Integer => int.Parse(value),
-			MachineResource.OptionType.Float => float.Parse(value),
+			MachineOption.OptionType.Integer => int.Parse(value),
+			MachineOption.OptionType.Float => float.Parse(value),
 			_ => value
 		};
 	}

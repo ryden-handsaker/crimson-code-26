@@ -5,7 +5,7 @@ using CrimsonCode26.scenes.game.data.machines;
 
 namespace CrimsonCode26.scenes.game.data;
 
-public class MachineParser
+public static class MachineParser
 {
 	public enum Type
 	{
@@ -82,5 +82,18 @@ public class MachineParser
 		}
 
 		return parsedMachines;
+	}
+
+	public static string GetName(MachineParser.Type type)
+	{
+		return type switch
+		{
+			Type.FolderSource => "Folder Source",
+			Type.FolderDestination => "Folder Destination",
+			Type.ExtensionFilter => "Extension Filter",
+			Type.TrashDestination => "Trash",
+			Type.DoNothingDestination => "Do Nothing",
+			_ => throw new ArgumentException("unknown type")
+		};
 	}
 }

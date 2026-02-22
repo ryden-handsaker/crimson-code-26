@@ -13,7 +13,7 @@ public class TrashDestination : Machine, ISerializable<TrashDestination>
 
     public TrashDestination(Guid guid)
     {
-        Initialize("Trash", guid);
+        Initialize(guid);
     }
 
     public static TrashDestination CreateFromJSON(Guid guid, JsonObject json)

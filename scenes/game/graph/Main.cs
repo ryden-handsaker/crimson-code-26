@@ -1,7 +1,4 @@
 using Godot;
-using Godot.Collections;
-using System;
-using System.Linq;
 using CrimsonCode26.scripts;
 
 namespace CrimsonCode26.scenes.game.graph;

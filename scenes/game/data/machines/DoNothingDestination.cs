@@ -9,7 +9,7 @@ public class DoNothingDestination : Machine, ISerializable<DoNothingDestination>
 
     public DoNothingDestination(Guid guid)
     {
-        Initialize("Do Nothing", guid);
+        Initialize(guid);
     }
 
     public static DoNothingDestination CreateFromJSON(Guid guid, JsonObject json)

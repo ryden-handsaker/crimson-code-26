@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://bvg7vr4dcenv5"]
 
 [ext_resource type="Script" uid="uid://vew2v0ws4wrf" path="res://scenes/game/graph/Main.cs" id="1_x30ci"]
-[ext_resource type="PackedScene" uid="uid://c66a1oomtayeu" path="res://scenes/game/machine_template.tscn" id="2_l4pes"]
-[ext_resource type="Resource" uid="uid://c6u3wo50mr5dm" path="res://resources/filter_extension.tres" id="3_5ia48"]
+[ext_resource type="PackedScene" uid="uid://c66a1oomtayeu" path="res://scenes/game/machine_template.tscn" id="2_eofdk"]
 [ext_resource type="Script" uid="uid://bc81oymbcpcj" path="res://scenes/game/graph/GraphEdit.cs" id="4_66dbo"]
+[ext_resource type="Resource" uid="uid://cj8sovnrqnsbq" path="res://resources/folder_source.tres" id="5_7a4tw"]
 [ext_resource type="PackedScene" uid="uid://d0wxej52ao5gl" path="res://scenes/game/machine_button.tscn" id="5_66dbo"]
-[ext_resource type="Resource" uid="uid://cj8sovnrqnsbq" path="res://resources/file_source.tres" id="5_hvrwv"]
-[ext_resource type="Resource" uid="uid://ra6fcrry7ilc" path="res://resources/file_destination.tres" id="6_ynsps"]
+[ext_resource type="Resource" uid="uid://ra6fcrry7ilc" path="res://resources/folder_destination.tres" id="6_pm8bl"]
+[ext_resource type="Resource" uid="uid://c6u3wo50mr5dm" path="res://resources/extension_filter.tres" id="7_mleqn"]
 
 [sub_resource type="Theme" id="Theme_66dbo"]
 
@@ -19,8 +19,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_66dbo")
 script = ExtResource("1_x30ci")
-machineScene = ExtResource("2_l4pes")
-testResource = ExtResource("3_5ia48")
+_machineScene = ExtResource("2_eofdk")
 
 [node name="GraphEdit" type="GraphEdit" parent="." unique_id=380815568]
 unique_name_in_owner = true
@@ -50,17 +49,17 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FileSource" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("5_66dbo")]
+[node name="Folder Source" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("5_66dbo")]
 layout_mode = 2
-machineResource = ExtResource("5_hvrwv")
+_resource = ExtResource("5_7a4tw")
 
-[node name="FileDestination" parent="Panel/ScrollContainer/Buttons" unique_id=1759098864 instance=ExtResource("5_66dbo")]
+[node name="Folder Destination" parent="Panel/ScrollContainer/Buttons" unique_id=1759098864 instance=ExtResource("5_66dbo")]
 layout_mode = 2
-machineResource = ExtResource("6_ynsps")
+_resource = ExtResource("6_pm8bl")
 
-[node name="FilterExtension" parent="Panel/ScrollContainer/Buttons" unique_id=1324061357 instance=ExtResource("5_66dbo")]
+[node name="Extension Filter" parent="Panel/ScrollContainer/Buttons" unique_id=1324061357 instance=ExtResource("5_66dbo")]
 layout_mode = 2
-machineResource = ExtResource("3_5ia48")
+_resource = ExtResource("7_mleqn")
 
 [node name="Button" type="Button" parent="." unique_id=1905827587]
 layout_mode = 2

@@ -1,13 +1,10 @@
 using System;
-using CrimsonCode26.scenes.game.data;
 using CrimsonCode26.scenes.game.data.machines;
-using Godot.Collections;
 
 namespace CrimsonCode26.scenes.game.data;
 
 public abstract class Machine
 {
-    public string Name { get; protected set; }
     public Guid Id { get; protected set; }
     
     /// File being actively processed by the machine (null otherwise)
@@ -22,9 +19,8 @@ public abstract class Machine
     protected Belt Belt;
 
     /// Set default values for machine
-    protected void Initialize(string name, Guid guid)
+    protected void Initialize(Guid guid)
     {
-        Name = name;
         Id = guid;
         ProcessFile = null;
         PushTarget = null;
@@ -36,7 +32,7 @@ public abstract class Machine
     protected bool Push(Machine output)
     {
         PushTarget = output;
-        bool success = PushTarget.Enqueue(ProcessFile);
+        var success = PushTarget.Enqueue(ProcessFile);
 
         if (success)
         {
@@ -54,7 +50,7 @@ public abstract class Machine
         if (PushTarget == null)
             return true;
 
-        bool success = Push(PushTarget);
+        var success = Push(PushTarget);
         if (success)
             PushTarget = null;
         return success;
@@ -74,4 +70,17 @@ public abstract class Machine
 
     /// Ticks the machine
     public void Tick() => Belt.Tick();
+    
+    public static string GetName(System.Type type)
+    {
+        return type switch
+        {
+            not null when type == typeof(FolderSource) => "Folder Source",
+            not null when type == typeof(FolderDestination) => "Folder Destination",
+            not null when type == typeof(ExtensionFilter) => "Extension Filter",
+            not null when type == typeof(TrashDestination) => "Trash",
+            not null when type == typeof(DoNothingDestination) => "Do Nothing",
+            _ => throw new ArgumentException("unknown type")
+        };
+    }
 }
