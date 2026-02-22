@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CrimsonCode26.scenes.game.data;
 using CrimsonCode26.scenes.game.data.machines;
 using Godot;
@@ -30,8 +31,15 @@ public partial class Visualizer : Node2D
 
 		// draw source at top left
 		DrawMachineAndOutputs(source, new Vector2I(2, 2));
+	}
 
-		// find outputs of source
+	private void Tick()
+	{
+		foreach (Machine machine in ParsedMachines.Values)
+		{
+			machine.Tick();
+			//GD.Print(machine.)
+		}
 	}
 
 	private FolderSource FindFileSource()
