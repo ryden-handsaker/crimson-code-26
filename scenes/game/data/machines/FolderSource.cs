@@ -60,7 +60,7 @@ public class FolderSource : Machine, ISerializable<FolderSource>
     {
         var machine = new FolderSource(guid);
         
-        machine.SetPath(json["path"]?.GetValue<string>());
+        //machine.SetPath(json["path"]?.GetValue<string>());
 
         return machine;
     }

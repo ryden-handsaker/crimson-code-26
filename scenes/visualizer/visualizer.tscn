@@ -21,6 +21,37 @@ sources/0 = SubResource("TileSetAtlasSource_hf8o8")
 
 [node name="Visualizer" type="Node2D" unique_id=511065362]
 script = ExtResource("1_n004b")
+JsonMap = "{
+  \"1b03b706-4667-47ad-8970-8449b66a8fdf\" : {
+    \"type\" : \"FolderSource\",
+    \"outputs\" : {
+      \"stream\" : \"639fe468-6dfc-401e-936f-27d26d4317dd\"
+    },
+    \"data\" : {
+      \"path\" : \"C:/Users/shithead/Downloads/\"
+    }
+  },
+  \"639fe468-6dfc-401e-936f-27d26d4317dd\" : {
+    \"type\" : \"ExtensionFilter\",
+    \"outputs\" : {
+      \"pass\" : \"e07fef47-851b-426c-861a-edf134782631\",
+      \"fail\" : \"e202be1f-bfb8-466d-b9b4-60cc9f8a1f28\"
+    },
+    \"data\" : {
+      \"extentions\" : [ \"png\" ]
+    }
+  },
+  \"e07fef47-851b-426c-861a-edf134782631\" : {
+    \"type\" : \"FileDestination\",
+    \"data\" : {
+      \"path\" : \"C:/Users/shithead/Downloads/sorted/\"
+    }
+  },
+  \"e202be1f-bfb8-466d-b9b4-60cc9f8a1f28\" : {
+    \"type\" : \"TrashDestination\"
+  }
+}"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1016484079]
+unique_name_in_owner = true
 tile_set = SubResource("TileSet_nnkq8")

@@ -17,7 +17,7 @@ public abstract class Machine
     public Machine PushTarget { get; protected set; }
     
     /// Map of machines to push to
-    protected readonly System.Collections.Generic.Dictionary<string, Machine> Outputs = new();
+    public readonly System.Collections.Generic.Dictionary<string, Machine> Outputs = new();
     /// Input belt
     protected Belt Belt;
 
