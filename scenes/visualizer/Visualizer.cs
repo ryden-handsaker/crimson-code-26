@@ -20,6 +20,8 @@ public partial class Visualizer : Node2D
 		_nameContainer = GetNode<Control>("%MachineNames");
 		//_tileMap.GetCellAlternativeTile()
 		Visualize();
+
+		Tick();
 	}
 
 	public void Visualize()
@@ -38,7 +40,7 @@ public partial class Visualizer : Node2D
 		foreach (Machine machine in ParsedMachines.Values)
 		{
 			machine.Tick();
-			//GD.Print(machine.)
+			GD.Print(machine.GetBeltState().Peek().Name);
 		}
 	}
 

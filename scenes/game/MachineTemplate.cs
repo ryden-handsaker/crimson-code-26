@@ -145,8 +145,8 @@ public partial class MachineTemplate : GraphNode
 
 	public void SetOutputConnection(Guid output, int slotId)
 	{
-		//GD.Print(slotId - Resource.Inputs.Length + Resource.Options.Length - 1);
-		_outputConnections[slotId - Resource.Inputs.Length + Resource.Options.Length - 1] = output;
+		//GD.Print(slotId - Resource.Inputs.Length - Resource.Options.Length);
+		_outputConnections[slotId] = output;
 	}
 
 	public string GetOptionValue(string key)

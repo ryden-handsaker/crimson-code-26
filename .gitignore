@@ -18,3 +18,5 @@ mono_crash.*.json
 
 # Jetbrains
 .idea/
+
+test/
