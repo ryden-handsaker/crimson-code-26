@@ -14,7 +14,18 @@
 
 [sub_resource type="Theme" id="Theme_66dbo"]
 
-[node name="Main" type="HBoxContainer" unique_id=409967496]
+[node name="Main" type="Control" unique_id=128044036]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x30ci")
+_machineScene = ExtResource("2_eofdk")
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=409967496]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,10 +33,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_66dbo")
-script = ExtResource("1_x30ci")
-_machineScene = ExtResource("2_eofdk")
 
-[node name="GraphEdit" type="GraphEdit" parent="." unique_id=380815568]
+[node name="GraphEdit" type="GraphEdit" parent="HBox" unique_id=380815568]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -35,12 +44,12 @@ minimap_enabled = false
 show_minimap_button = false
 script = ExtResource("4_66dbo")
 
-[node name="Panel" type="Panel" parent="." unique_id=1232071122]
+[node name="Panel" type="Panel" parent="HBox" unique_id=1232071122]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.15
+size_flags_stretch_ratio = 0.18
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel" unique_id=1139665024]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBox/Panel" unique_id=1139665024]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,43 +57,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Buttons" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=797108497]
+[node name="Buttons" type="VBoxContainer" parent="HBox/Panel/ScrollContainer" unique_id=797108497]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Folder Source" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("5_66dbo")]
+[node name="Folder Source" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("5_7a4tw")
 
-[node name="Folder Destination" parent="Panel/ScrollContainer/Buttons" unique_id=1759098864 instance=ExtResource("5_66dbo")]
+[node name="Folder Destination" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=1759098864 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("6_pm8bl")
 
-[node name="Extension Filter" parent="Panel/ScrollContainer/Buttons" unique_id=1324061357 instance=ExtResource("5_66dbo")]
+[node name="Extension Filter" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=1324061357 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("7_mleqn")
 
-[node name="Open Destination" parent="Panel/ScrollContainer/Buttons" unique_id=755537059 instance=ExtResource("5_66dbo")]
+[node name="Open Destination" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=755537059 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("8_spg6q")
 
-[node name="Rename Modifier" parent="Panel/ScrollContainer/Buttons" unique_id=2020599682 instance=ExtResource("5_66dbo")]
+[node name="Rename Modifier" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=2020599682 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("9_exqpb")
 
-[node name="Trash Destination" parent="Panel/ScrollContainer/Buttons" unique_id=1255482509 instance=ExtResource("5_66dbo")]
+[node name="Trash Destination" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=1255482509 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("10_8d7qk")
 
-[node name="Do Nothing Destination" parent="Panel/ScrollContainer/Buttons" unique_id=812840402 instance=ExtResource("5_66dbo")]
+[node name="Do Nothing Destination" parent="HBox/Panel/ScrollContainer/Buttons" unique_id=812840402 instance=ExtResource("5_66dbo")]
 layout_mode = 2
 _resource = ExtResource("11_stwoq")
 
 [node name="Button" type="Button" parent="." unique_id=1905827587]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.9
+anchor_right = 0.1
+anchor_bottom = 0.98
+grow_vertical = 0
 text = "Simulate"
 
-[connection signal="connection_request" from="GraphEdit" to="." method="OnConnectionRequest"]
-[connection signal="disconnection_request" from="GraphEdit" to="." method="OnDisconnectionRequest"]
+[connection signal="connection_request" from="HBox/GraphEdit" to="." method="OnConnectionRequest"]
+[connection signal="delete_nodes_request" from="HBox/GraphEdit" to="." method="OnDeleteNodesRequest"]
+[connection signal="disconnection_request" from="HBox/GraphEdit" to="." method="OnDisconnectionRequest"]
 [connection signal="button_down" from="Button" to="." method="OnButtonButtonDown"]
