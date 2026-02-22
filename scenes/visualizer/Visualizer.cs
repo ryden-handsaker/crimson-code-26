@@ -108,9 +108,9 @@ public partial class Visualizer : Node2D
 	// returns how far right ts function got
 	private int DrawMachineAndOutputs(Machine machine, Vector2I pos)
 	{
-		var conveyorInputOffset = new Vector2I(-1, 0);
-		var rightConveyorOutputOffset = new Vector2I(1, 0);
-		var bottomConveyorOutputOffset = new Vector2I(0, 2);
+		var conveyorInputOffset = new Vector2I(0, 0);
+		var rightConveyorOutputOffset = new Vector2I(0, 0);
+		var bottomConveyorOutputOffset = new Vector2I(0, 1);
 		var rightMachineOffset = new Vector2I(4, 0);
 		var bottomMachineOffset = new Vector2I(3, 4);
 
@@ -135,7 +135,7 @@ public partial class Visualizer : Node2D
 
 		var label = new Label
 		{
-			Text = Machine.GetName(machine.GetType()),
+			Text = (false && machine is FolderDestination machineDest) ? System.IO.Path.GetDirectoryName(machineDest.Path) :  Machine.GetName(machine.GetType()),
 			Position = new Vector2(pos.X * 32 - 28, pos.Y * 32 - 50),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0, 0, 0, 1),
@@ -201,6 +201,7 @@ public partial class Visualizer : Node2D
 	private void OnTickButtonPressed()
 	{
 		GetNode<Button>("%StartButton").Visible = false;
+
 		_tickTimer.Start(TickTime);
 	}
 
