@@ -128,7 +128,7 @@ public partial class Visualizer : Node2D
 
 		var label = new Label
 		{
-			Text = Machine.GetName(machine.GetType()),
+			Text = (false && machine is FolderDestination machineDest) ? System.IO.Path.GetDirectoryName(machineDest.Path) :  Machine.GetName(machine.GetType()),
 			Position = new Vector2(pos.X * 32 - 28, pos.Y * 32 - 50),
 			HorizontalAlignment = HorizontalAlignment.Center,
 			Modulate = new Color(0, 0, 0, 1),
