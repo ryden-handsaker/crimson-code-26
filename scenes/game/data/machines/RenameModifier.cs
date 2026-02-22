@@ -6,33 +6,34 @@ namespace CrimsonCode26.scenes.game.data.machines;
 
 public class RenameModifier : Machine, ISerializable<RenameModifier>
 {
-    public string InputFormat { get; private set; }
-    public string OutputFormat { get; private set; }
+    public string InputFormat;
+    public string OutputFormat;
+    
     public override void Process(File file)
     {
         ProcessFile = file;
         Regex regex = new Regex(InputFormat);
         
-        
         // Define a MatchEvaluator to handle the output format
         Match match = regex.Match(file.Name);
         string newName = string.Format(OutputFormat, match.Groups);
-        
-        // TODO: actually rename the file
 
-        // Perform the replacement and return the result
+        file.Name = newName;
         
         Push(Outputs["Output"]);
     }
 
-    public RenameModifier(string inputFormat, string outputFormat)
+    public RenameModifier(Guid guid, string inputFormat, string outputFormat)
     {
+        Initialize("Rename Modifier", guid);
         InputFormat = inputFormat;
         OutputFormat = outputFormat;
     }
 
     public static RenameModifier CreateFromJSON(Guid guid, JsonObject json)
     {
-        throw new NotImplementedException();
+        string inputFormat = json["input_format"]?.GetValue<string>();
+        string outputFormat = json["output_format"]?.GetValue<string>();
+        return new RenameModifier(guid, inputFormat, outputFormat);
     }
 }

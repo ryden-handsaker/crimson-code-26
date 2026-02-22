@@ -7,79 +7,79 @@ namespace CrimsonCode26.scenes.game.data;
 
 public class MachineParser
 {
-    public enum Type
-    {
-        FileSource, FileDestination, TrashDestination, ExtensionFilter
-    }
+	public enum Type
+	{
+		FolderSource, FolderDestination, TrashDestination, ExtensionFilter
+	}
 
-    public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
-    {
-        { Type.FileSource, FolderSource.CreateFromJSON },
-        //{ Type.FileDestination, (guid, data) => new FolderDestination(guid) },
-        //{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
-        { Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
-    };
+	public static readonly Dictionary<Type, Func<Guid, JsonObject, Machine>> Factories = new()
+	{
+		{ Type.FolderSource, FolderSource.CreateFromJSON },
+		{ Type.FolderDestination, FolderDestination.CreateFromJSON },
+		//{ Type.TrashDestination, (guid, data) => new TrashDestination(guid) },
+		{ Type.ExtensionFilter, ExtensionFilter.CreateFromJSON }
+	};
 
-    public static readonly Dictionary<Guid, Machine> ParsedMachines = new();
+	public static readonly Dictionary<Guid, Machine> ParsedMachines = new();
 
-    public static void ParseJSON(string input)
-    {
-        ParsedMachines.Clear();
+	public static void ParseJSON(string input)
+	{
+		ParsedMachines.Clear();
 
-        var root = JsonNode.Parse(input) as JsonObject
-            ?? throw new ArgumentException("bad json");
+		var root = JsonNode.Parse(input) as JsonObject
+			?? throw new ArgumentException("bad json");
 
-        var machines = new Dictionary<Guid, (MachineParser.Type Type, Dictionary<string, Guid> Outputs, JsonObject Data)>();
+		var machines = new Dictionary<Guid, (MachineParser.Type Type, Dictionary<string, Guid> Outputs, JsonObject Data)>();
 
-        foreach (var entry in root)
-        {
-            if (!Guid.TryParse(entry.Key, out var guid))
-                throw new ArgumentException("key is not valid guid");
+		foreach (var entry in root)
+		{
+			if (!Guid.TryParse(entry.Key, out var guid))
+				throw new ArgumentException("key is not valid guid");
 
-            var node = entry.Value as JsonObject
-                       ?? throw new ArgumentException("node is not a json object");
+			var node = entry.Value as JsonObject
+					   ?? throw new ArgumentException("node is not a json object");
 
-            if (!Enum.TryParse(node["type"]?.GetValue<string>(), out MachineParser.Type type))
-                throw new ArgumentException("node has invalid type");
+			if (!Enum.TryParse(node["type"]?.GetValue<string>(), out MachineParser.Type type))
+				throw new ArgumentException("node has invalid type");
 
-            var outputs = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
-            if (node.TryGetPropertyValue("outputs", out var outputNode) && outputNode is JsonObject outputObject)
-            {
-                foreach (var output in outputObject)
-                {
-                    var str = output.Value?.GetValue<string>();
-                    if (!Guid.TryParse(str, out var outputGuid))
-                        throw new ArgumentException("output has invalid guid");
-                    outputs[output.Key] = outputGuid;
-                }
-            }
+			var outputs = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
+			if (node.TryGetPropertyValue("outputs", out var outputNode) && outputNode is JsonObject outputObject)
+			{
+				foreach (var output in outputObject)
+				{
+					var str = output.Value?.GetValue<string>();
+					if (!Guid.TryParse(str, out var outputGuid))
+						throw new ArgumentException("output has invalid guid");
+					outputs[output.Key] = outputGuid;
+				}
+			}
 
-            if (node.TryGetPropertyValue("data", out var dataNode) && dataNode is JsonObject dataObject)
-            {
-                machines[guid] = (type, outputs, dataObject);
-            }
-            else machines[guid] = (type, outputs, null);
-        }
+			if (node.TryGetPropertyValue("data", out var dataNode) && dataNode is JsonObject dataObject)
+			{
+				machines[guid] = (type, outputs, dataObject);
+			}
+			else machines[guid] = (type, outputs, null);
+		}
 
-        foreach (var (guid, machine) in machines) 
-        {
-            if (!Factories.TryGetValue(machine.Type, out var factory))
-                throw new ArgumentException("unknown machine type");
+		foreach (var (guid, machine) in machines) 
+		{
+			if (!Factories.TryGetValue(machine.Type, out var factory))
+				throw new ArgumentException("unknown machine type");
 
-            ParsedMachines[guid] = factory(guid, machine.Data);
-        }
+			ParsedMachines[guid] = factory(guid, machine.Data);
+		}
 
-        foreach (var (guid, machine) in machines)
-        {
-            var parsed = ParsedMachines[guid];
-            
-            foreach (var (name, targetGuid) in machine.Outputs)
-            {
-                if (!ParsedMachines.TryGetValue(targetGuid, out var target))
-                    throw new ArgumentException("invalid reference as output");
+		foreach (var (guid, machine) in machines)
+		{
+			var parsed = ParsedMachines[guid];
+			
+			foreach (var (name, targetGuid) in machine.Outputs)
+			{
+				if (!ParsedMachines.TryGetValue(targetGuid, out var target))
+					throw new ArgumentException("invalid reference as output");
 
-                parsed.AddConnection(name, target);
-            }
-        }
-    }
+				parsed.AddConnection(name, target);
+			}
+		}
+	}
 }
