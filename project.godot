@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Crimson Code 26"
-run/main_scene="uid://73mslj0b401x"
+run/main_scene="uid://bvg7vr4dcenv5"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
