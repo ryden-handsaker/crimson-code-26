@@ -6,4 +6,5 @@
 script = ExtResource("1_cy1la")
 Inputs = PackedStringArray("Input")
 Type = "FileDestination"
+Options = PackedStringArray("path")
 metadata/_custom_type_script = "uid://dmdmt8sp7skwo"
