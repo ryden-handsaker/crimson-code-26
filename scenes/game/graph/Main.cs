@@ -52,6 +52,16 @@ public partial class Main : HBoxContainer
 
 	private void OnButtonButtonDown()
 	{
-		GD.Print(_graphEdit.ToJSON());
+		var json = _graphEdit.ToJSON();
+		
+		var packedScene = ResourceLoader.Load<PackedScene>("uid://sydgop38y2sb");
+		var visualizer = packedScene.Instantiate<Visualizer>();
+		visualizer.JsonMap = json;
+
+		GD.Print(json);
+
+		GetTree().Root.AddChild(visualizer);
+		GetTree().CurrentScene.QueueFree();
+		GetTree().CurrentScene = visualizer;
 	}
 }
