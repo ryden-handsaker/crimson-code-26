@@ -3,10 +3,24 @@ using Godot;
 
 public partial class MachineTemplate : GraphNode
 {
-	[Export] MachineResource machine;
+	// [Export] MachineResource machine;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
+	{
+		// if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max
+
+		// for (int i = 0; i < machine.Options.Length; i++)
+		// {
+		// 	AddOption(machine.Options[i]);
+		// }
+		// for (int i = 0; i < machine.Outputs.Length; i++)
+		// {
+		// 	AddOutput(machine.Outputs[i], i + 1 + machine.Options.Length);
+		// }
+	}
+
+	public void Initialize(MachineResource machine)
 	{
 		if (machine.Inputs.Length != 0) AddInput(machine.Inputs[0]); // there can only be one input max
 
@@ -16,8 +30,10 @@ public partial class MachineTemplate : GraphNode
 		}
 		for (int i = 0; i < machine.Outputs.Length; i++)
 		{
-			AddOutput(machine.Outputs[i], i + 1 + machine.Options.Length);
+			AddOutput(machine.Outputs[i], i + machine.Inputs.Length + machine.Options.Length);
 		}
+
+		Title = machine.Type;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

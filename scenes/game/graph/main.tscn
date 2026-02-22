@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://vew2v0ws4wrf" path="res://scenes/game/graph/Main.cs" id="1_x30ci"]
 [ext_resource type="PackedScene" uid="uid://c66a1oomtayeu" path="res://scenes/game/machine_template.tscn" id="2_l4pes"]
+[ext_resource type="Resource" uid="uid://c6u3wo50mr5dm" path="res://resources/filter_extension.tres" id="3_5ia48"]
+[ext_resource type="PackedScene" uid="uid://ceebwxa13t0cf" path="res://scenes/game/graph/machine_button.tscn" id="4_eofdk"]
+[ext_resource type="Resource" uid="uid://cj8sovnrqnsbq" path="res://resources/source_machine.tres" id="5_hvrwv"]
 
 [node name="Main" type="HBoxContainer" unique_id=409967496]
 anchors_preset = 15
@@ -11,18 +14,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_x30ci")
+machineScene = ExtResource("2_l4pes")
+testResource = ExtResource("3_5ia48")
 
 [node name="GraphEdit" type="GraphEdit" parent="." unique_id=380815568]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 scroll_offset = Vector2(-194, 0)
-
-[node name="MachineTemplate" parent="GraphEdit" unique_id=1033405312 instance=ExtResource("2_l4pes")]
-layout_mode = 0
-offset_left = 194.0
-offset_right = 447.0
-mouse_filter = 1
 
 [node name="Panel" type="Panel" parent="." unique_id=1232071122]
 layout_mode = 2
@@ -37,22 +36,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=797108497]
+[node name="Buttons" type="VBoxContainer" parent="Panel/ScrollContainer" unique_id=797108497]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="Panel/ScrollContainer/VBoxContainer" unique_id=1792202074]
-custom_minimum_size = Vector2(0, 100)
+[node name="FilterExtension" parent="Panel/ScrollContainer/Buttons" unique_id=816893365 instance=ExtResource("4_eofdk")]
 layout_mode = 2
-text = "test"
+machineResource = ExtResource("3_5ia48")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=347437912]
-visible = false
+[node name="SourceFolder" parent="Panel/ScrollContainer/Buttons" unique_id=535732831 instance=ExtResource("4_eofdk")]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+machineResource = ExtResource("5_hvrwv")
 
 [connection signal="connection_request" from="GraphEdit" to="." method="OnConnectionRequest"]
+[connection signal="pressed" from="Panel/ScrollContainer/Buttons/FilterExtension" to="Panel/ScrollContainer/Buttons/FilterExtension" method="OnPressed"]
+[connection signal="pressed" from="Panel/ScrollContainer/Buttons/SourceFolder" to="Panel/ScrollContainer/Buttons/SourceFolder" method="OnPressed"]

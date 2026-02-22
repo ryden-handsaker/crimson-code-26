@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MachineResource" format=3 uid="uid://cj8sovnrqnsbq"]
+
+[ext_resource type="Script" uid="uid://dmdmt8sp7skwo" path="res://scripts/MachineResource.cs" id="1_0h0ao"]
+
+[resource]
+script = ExtResource("1_0h0ao")
+Outputs = PackedStringArray("Output")
+Type = "FileSource"
+metadata/_custom_type_script = "uid://dmdmt8sp7skwo"

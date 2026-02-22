@@ -4,14 +4,14 @@ using Godot;
 public partial class MachineResource : Resource
 {
     [Export]
-    public string[] Inputs;
+    public string[] Inputs = [];
 
     [Export]
-    public string[] Outputs;
+    public string[] Outputs = [];
 
     [Export]
     public string Type;
 
     [Export]
-    public string[] Options;
+    public string[] Options = [];
 }
